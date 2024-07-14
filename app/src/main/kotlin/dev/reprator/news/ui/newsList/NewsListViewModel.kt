@@ -1,26 +1,43 @@
-package com.uteke.contactbook.features.userlist.presentation
+package dev.reprator.news.ui.newsList
 
 import androidx.lifecycle.ViewModel
-import com.uteke.contactbook.features.common.arch.ActionProcessor
-import com.uteke.contactbook.features.common.arch.Reducer
-import com.uteke.contactbook.features.common.arch.model
-import com.uteke.contactbook.features.common.dispatcher.DispatcherProvider
-import com.uteke.contactbook.features.userlist.presentation.model.Action
-import com.uteke.contactbook.features.userlist.presentation.model.Event
-import com.uteke.contactbook.features.userlist.presentation.model.Mutation
-import com.uteke.contactbook.features.userlist.presentation.view.ViewState
-import kotlinx.coroutines.flow.Flow
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.reprator.news.appDb.AppNewsDatabase
+import dev.reprator.news.dataSource.remote.NewsApiService
+import dev.reprator.news.dataSource.remote.mapper.NewsMapper
+import dev.reprator.news.dataSource.remote.paging.NewsPagingSource
+import javax.inject.Inject
 
-class UserListViewModel(
-    actionProcessors: Collection<ActionProcessor<Action, Mutation, Event>>,
-    reducers: Collection<Reducer<Mutation, ViewState>>,
-    dispatcherProvider: DispatcherProvider,
-    initialState: ViewState = ViewState(),
+@HiltViewModel
+class NewsListViewModel @Inject constructor(
+    private val appDb: AppNewsDatabase,
+    newsApi: NewsApiService,
+    mapper: NewsMapper
 ) : ViewModel() {
-    private val model by model(actionProcessors, reducers, dispatcherProvider, initialState)
 
-    internal val viewStateFlow: Flow<ViewState> get() = model.viewStateFlow
-    internal val eventFlow: Flow<Event> get() = model.eventFlow
+    @OptIn(ExperimentalPagingApi::class)
+    val news = Pager(
+        config = PagingConfig(
+            pageSize = 20,
+            prefetchDistance = 2,
+            initialLoadSize = 19
+        ),
+        pagingSourceFactory = {
+            appDb.getNewsDao().getNews("general")
+        },
+        remoteMediator = NewsPagingSource(
+            newsApi = newsApi, sources = "general",
+            appDb = appDb, mapper = mapper
+        )
+    ).flow
 
-    fun process(action: Action) = model.process(action)
 }
+
+/*
+ pageSize = 20,
+            prefetchDistance = 2,
+            initialLoadSize = 19
+* */

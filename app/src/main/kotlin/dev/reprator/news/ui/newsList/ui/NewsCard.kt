@@ -1,4 +1,4 @@
-package dev.reprator.news.ui.newsList
+package dev.reprator.news.ui.newsList.ui
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.clickable

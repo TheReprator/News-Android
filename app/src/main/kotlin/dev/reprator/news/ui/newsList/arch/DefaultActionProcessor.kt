@@ -1,9 +1,9 @@
-package dev.reprator.news.ui.newsList
+package dev.reprator.news.ui.newsList.arch
 
 import dev.reprator.news.domain.usecase.NewsListUseCase
-import dev.reprator.news.ui.newsList.archModel.Action
-import dev.reprator.news.ui.newsList.archModel.Event
-import dev.reprator.news.ui.newsList.archModel.Mutation
+import dev.reprator.news.ui.newsList.arch.model.Action
+import dev.reprator.news.ui.newsList.arch.model.Event
+import dev.reprator.news.ui.newsList.arch.model.Mutation
 import dev.reprator.news.util.arch.ActionProcessor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector

@@ -1,95 +1,108 @@
 package dev.reprator.news.ui.newsList
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import dev.reprator.news.ui.composeUtil.AppIcons
-import dev.reprator.news.ui.composeUtil.CollectSideEffect
-import dev.reprator.news.ui.newsList.archModel.Event
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
+import dev.reprator.news.R
+import dev.reprator.news.modal.ModalNews
+import dev.reprator.news.ui.newsList.ui.NewsCard
+import dev.reprator.news.util.composeUtil.theme.Dimens.MediumPadding1
+import dev.reprator.news.util.composeUtil.ui.AppViewError
+import dev.reprator.news.util.composeUtil.ui.AppViewLoader
+import dev.reprator.news.util.composeUtil.ui.EmptyScreen
+
+private val <T : Any> LazyPagingItems<T>.isEmpty
+    get() = loadState.source.refresh is LoadState.NotLoading && loadState.append.endOfPaginationReached && itemCount == 0
 
 @Composable
 internal fun NewsListScreen(
-    onNewsClick: (String) -> Unit,
+    onNewsClick: (ModalNews) -> Unit,
+    showToast: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: NewsListViewModel = hiltViewModel(),
 ) {
+    val paginatedData = viewModel.news.collectAsLazyPagingItems()
+    NewsContainer(paginatedData, onNewsClick, showToast) {
+        paginatedData.refresh()
+    }
+}
 
-    val context = LocalContext.current
+@Composable
+fun NewsContainer(
+    news: LazyPagingItems<ModalNews>, newsClick: (ModalNews) -> Unit,
+    showToast: (String) -> Unit,
+    reload: () -> Unit
+) {
+    val lazyListState = rememberLazyListState()
+    val loadState = news.loadState.mediator
 
-    CollectSideEffect(viewModel.eventFlow) {
-        when (it) {
-            is Event.ToastMessage -> {
+    LazyColumn(state = lazyListState,  contentPadding = PaddingValues(all = 12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)) {
 
+        items(count = news.itemCount,  key = news.itemKey { item ->
+            item.uniqueKey
+        }) { index ->
+
+            news[index]?.let {
+                NewsCard(article = it, onClick = newsClick)
             }
-            else -> {
+        }
 
+        item {
+            when {
+                (loadState?.refresh == LoadState.Loading) -> {
+                    ShimmerEffect()
+                }
+
+                (loadState?.append == LoadState.Loading) -> {
+                    AppViewLoader(Modifier.fillMaxWidth())
+                }
+
+                (loadState?.refresh is LoadState.Error || loadState?.append is LoadState.Error) -> {
+                    val isPaginatingError = (loadState.append is LoadState.Error) || news.itemCount > 1
+
+                    val error = stringResource(R.string.newslist_text_generic_error).format(
+                        if (loadState.append is LoadState.Error)
+                            (loadState.append as LoadState.Error).error
+                        else
+                            (loadState.refresh as LoadState.Error).error
+                    )
+
+                    if (!isPaginatingError) {
+                        AppViewError(error,  onReload = reload, modifier = Modifier.fillParentMaxSize())
+                    } else {
+                        showToast(error)
+                    }
+                }
+
+                (news.isEmpty) -> {
+                    EmptyScreen("No data found")
+                }
             }
         }
     }
 }
 
 @Composable
-fun AppViewError(errorMessage: String, onReload:() -> Unit = {}, modifier: Modifier = Modifier) {
-    Column(verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier) {
-        Text(errorMessage)
-        Spacer(Modifier.height(8.dp))
-        Button(onClick = onReload) {
-            Row {
-                val buttonData = AppIcons.Refresh
-                val description = stringResource(AppIcons.Refresh.second)
-
-                Icon(imageVector = buttonData.first, contentDescription = description)
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(text = description)
-            }
+fun ShimmerEffect() {
+    Column(verticalArrangement = Arrangement.spacedBy(MediumPadding1)) {
+        repeat(10) {
+            NewsCardShimmerEffect(
+                modifier = Modifier.padding(horizontal = MediumPadding1)
+            )
         }
     }
-}
-
-@Composable
-fun AppViewLoader(modifier: Modifier = Modifier) {
-    Box(modifier = modifier, contentAlignment = Alignment.Center) {
-        CircularProgressIndicator()
-    }
-}
-
-@Preview
-@Composable
-private fun PreviewStateLoader() {
-    AppViewLoader()
-}
-
-@Preview
-@Composable
-private fun PreviewStateError() {
-    AppViewError("An error occurrred")
-}
-
-@Preview
-@Composable
-private fun PreviewStateErrorFullScreen() {
-    val m = Modifier.fillMaxSize()
-    AppViewError("An error occurrred", modifier = m )
 }

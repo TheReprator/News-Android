@@ -1,6 +1,6 @@
-package com.uteke.contactbook.features.common.arch
+package dev.reprator.news.util.arch
 
-import com.uteke.contactbook.features.common.dispatcher.DispatcherProvider
+import dev.reprator.news.di.impl.AppCoroutineDispatchers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -14,11 +14,13 @@ class Model<ViewState, Action, Mutation, Event>(
     private val actionProcessors: Collection<ActionProcessor<Action, Mutation, Event>>,
     private val reducers: Collection<Reducer<Mutation, ViewState>>,
     private val coroutineScope: CoroutineScope,
-    private val dispatcherProvider: DispatcherProvider,
+    private val dispatcherProvider: AppCoroutineDispatchers,
     private val viewMutableStateFlow: MutableStateFlow<ViewState>,
+    paginatedView: ViewState,
     private val eventChannel: Channel<Event>,
 ) {
     val viewStateFlow: Flow<ViewState> = viewMutableStateFlow
+    val paginatedView: ViewState = paginatedView
     val eventFlow: Flow<Event> = eventChannel.receiveAsFlow()
 
     fun process(action: Action) {

@@ -1,23 +1,24 @@
-package dev.reprator.news.ui.newsList.navigation
+package dev.reprator.news.ui.newsDetail.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import dev.reprator.news.ui.newsList.NewsListScreen
+import dev.reprator.news.ui.newsDetail.NewsDetailScreen
 
-const val HOME_ROUTE = "home_route"
+const val ROUTE_NEWS_DETAIL = "route_news_detail"
 
-fun NavController.navigateToHome(navOptions: NavOptions) = navigate(HOME_ROUTE, navOptions)
+fun NavController.navigateToNewsDetail(navOptions: NavOptions ?= null) = navigate(ROUTE_NEWS_DETAIL, navOptions)
 
-fun NavGraphBuilder.homeScreen(
+fun NavGraphBuilder.newsDetailScreen(
     onClick: () -> Unit,
-    onShowSnackbar: suspend (String, String?) -> Boolean,
+    onShowSnackbar: (String) -> Unit,
 ) {
-    composable(route = HOME_ROUTE) {
-        NewsListScreen({
+    composable(route = ROUTE_NEWS_DETAIL) {
+        NewsDetailScreen({
 
         })
     }
 }
+
 

@@ -1,4 +1,4 @@
-package dev.reprator.news.ui.composeUtil
+package dev.reprator.news.util.composeUtil
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

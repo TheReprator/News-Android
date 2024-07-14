@@ -1,8 +1,11 @@
-package dev.reprator.news.ui.composeUtil.navigation
+package dev.reprator.news.util.composeUtil.navigation
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,8 +34,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.reprator.news.ui.composeUtil.LocalWindowSizeClass
+import androidx.navigation.compose.rememberNavController
+import dev.reprator.news.ui.newsList.navigation.ROUTE_NEWS
+import dev.reprator.news.util.composeUtil.LocalWindowSizeClass
+import dev.reprator.news.util.composeUtil.theme.ContrastAwareNewsTheme
 
 
 internal enum class NavigationType {
@@ -63,24 +70,24 @@ fun NewsNavigationWrapper(
         NavigationType.forWindowSizeSize(windowSizeClass)
     }
 
-    Scaffold (bottomBar={
+    Scaffold(bottomBar = {
         if (navigationType == NavigationType.BOTTOM_NAVIGATION) {
             Box {
-                HomeNavigationBar (
+                HomeNavigationBar(
                     selectedDestination = selectedDestination,
-                    navigateToTopLevelDestination= navigateToTopLevelDestination,
+                    navigateToTopLevelDestination = navigateToTopLevelDestination,
                 )
             }
         }
-    }, snackbarHost = { SnackbarHost(snackbarHostState) }){ contentPadding ->
-        Box(Modifier.fillMaxSize()) {
+    }, snackbarHost = { SnackbarHost(snackbarHostState) }) { contentPadding ->
+
+        Row(modifier = Modifier.fillMaxSize().padding(contentPadding)) {
+
             if (navigationType == NavigationType.RAIL) {
                 HomeNavigationRail(
                     selectedDestination = selectedDestination,
-                    navigateToTopLevelDestination= navigateToTopLevelDestination,
+                    navigateToTopLevelDestination = navigateToTopLevelDestination,
                 )
-
-                VerticalDivider()
             } else if (navigationType == NavigationType.PERMANENT_DRAWER) {
                 HomeNavigationDrawer(
                     selectedDestination = selectedDestination,
@@ -118,7 +125,7 @@ private fun HomeNavigationDrawer(
                 },
                 icon = {
                     Icon(
-                        imageVector = replyDestination.selectedIcon,
+                        imageVector = replyDestination.selectedIcon(selectedDestination),
                         contentDescription = stringResource(
                             id = replyDestination.iconTextId
                         )
@@ -133,6 +140,7 @@ private fun HomeNavigationDrawer(
     }
 }
 
+
 @Composable
 private fun HomeNavigationRail(
     selectedDestination: String,
@@ -140,13 +148,14 @@ private fun HomeNavigationRail(
     modifier: Modifier = Modifier,
 ) {
     NavigationRail(modifier = modifier) {
+        Spacer(Modifier.weight(1f))
         TOP_LEVEL_DESTINATIONS.forEach { replyDestination ->
             NavigationRailItem(
                 selected = selectedDestination == replyDestination.route,
                 onClick = { navigateToTopLevelDestination(replyDestination) },
                 icon = {
                     Icon(
-                        imageVector = replyDestination.selectedIcon,
+                        imageVector = replyDestination.selectedIcon(selectedDestination),
                         contentDescription = stringResource(
                             id = replyDestination.iconTextId
                         )
@@ -160,6 +169,7 @@ private fun HomeNavigationRail(
                 },
             )
         }
+        Spacer(Modifier.weight(1f))
     }
 }
 
@@ -176,7 +186,7 @@ fun HomeNavigationBar(
                 onClick = { navigateToTopLevelDestination(replyDestination) },
                 icon = {
                     Icon(
-                        imageVector = replyDestination.selectedIcon,
+                        imageVector = replyDestination.selectedIcon(selectedDestination),
                         contentDescription = stringResource(id = replyDestination.iconTextId)
                     )
                 },
@@ -188,5 +198,42 @@ fun HomeNavigationBar(
                 },
             )
         }
+    }
+}
+
+
+@Preview
+@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun NewsNavigationDrawerPreview() {
+    val navController = rememberNavController()
+    val navigationActions = NewsNavigationActions(navController)
+
+    ContrastAwareNewsTheme {
+        HomeNavigationDrawer(ROUTE_NEWS, navigationActions::navigateTo)
+    }
+}
+
+@Preview
+@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun NewsNavigationRailPreview() {
+    val navController = rememberNavController()
+    val navigationActions = NewsNavigationActions(navController)
+
+    ContrastAwareNewsTheme {
+        HomeNavigationRail(ROUTE_NEWS, navigationActions::navigateTo)
+    }
+}
+
+@Preview
+@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun NewsNavigationBottomPreview() {
+    val navController = rememberNavController()
+    val navigationActions = NewsNavigationActions(navController)
+
+    ContrastAwareNewsTheme {
+        HomeNavigationBar(ROUTE_NEWS, navigationActions::navigateTo)
     }
 }

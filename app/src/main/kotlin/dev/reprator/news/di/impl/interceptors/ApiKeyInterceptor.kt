@@ -1,4 +1,4 @@
-package dev.reprator.news.impl.interceptors
+package dev.reprator.news.di.impl.interceptors
 
 import okhttp3.Interceptor
 import okhttp3.Response

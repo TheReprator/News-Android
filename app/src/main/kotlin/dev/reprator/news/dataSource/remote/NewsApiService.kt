@@ -1,14 +1,17 @@
-package dev.reprator.news.data.remote
+package dev.reprator.news.dataSource.remote
 
-import dev.reprator.news.data.remote.model.EntityNews
+import dev.reprator.news.dataSource.remote.model.EntityNews
+import dev.reprator.news.dataSource.remote.model.EntityNewsContainer
 import retrofit2.http.GET
+import retrofit2.http.Query
 
-/*
- * Retrofit API declaration for NIA Network API
- */
 interface NewsApiService {
+
     @GET(value = "v2/top-headlines")
     suspend fun getHeadLines(
-    ): List<EntityNews>
+        @Query("category") sources: String,
+        @Query("page") page: Int,
+        @Query("pageSize") pageSize: Int,
+    ): EntityNewsContainer<EntityNews>
 
 }

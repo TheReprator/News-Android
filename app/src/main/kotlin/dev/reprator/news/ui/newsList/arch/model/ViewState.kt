@@ -1,4 +1,4 @@
-package dev.reprator.news.ui.newsList.archModel
+package dev.reprator.news.ui.newsList.arch.model
 
 import androidx.paging.PagingData
 import dev.reprator.news.modal.ModalNews

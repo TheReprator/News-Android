@@ -1,23 +1,17 @@
 package dev.reprator.news.ui.newsList.navigation
 
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import dev.reprator.news.modal.ModalNews
 import dev.reprator.news.ui.newsList.NewsListScreen
 
-const val HOME_ROUTE = "home_route"
+const val ROUTE_NEWS = "route_news"
 
-fun NavController.navigateToHome(navOptions: NavOptions) = navigate(HOME_ROUTE, navOptions)
-
-fun NavGraphBuilder.homeScreen(
-    onClick: () -> Unit,
-    onShowSnackbar: suspend (String, String?) -> Boolean,
-) {
-    composable(route = HOME_ROUTE) {
-        NewsListScreen({
-
-        })
+fun NavGraphBuilder.newsScreen( onClick: (ModalNews) -> Unit, showToast: (String) -> Unit ) {
+    composable(route = ROUTE_NEWS) {
+        NewsListScreen(onNewsClick = onClick, showToast)
     }
 }
+
+
 

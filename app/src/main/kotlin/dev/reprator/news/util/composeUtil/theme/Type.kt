@@ -1,4 +1,4 @@
-package dev.reprator.news.ui.theme
+package dev.reprator.news.util.composeUtil.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

@@ -1,4 +1,4 @@
-package com.loc.newsapp.presentation
+package dev.reprator.news.util.composeUtil.theme
 
 import androidx.compose.ui.unit.dp
 
@@ -15,7 +15,7 @@ object Dimens {
     val SmallIconSize = 11.dp
     val IconSize = 20.dp
 
-    val ArticleCardSize = 96.dp
+    val NewsCardSize = 96.dp
 
     val ArticleImageHeight = 248.dp
 

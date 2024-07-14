@@ -1,4 +1,4 @@
-package com.uteke.contactbook.features.common.arch
+package dev.reprator.news.util.arch
 
 import kotlinx.coroutines.flow.Flow
 

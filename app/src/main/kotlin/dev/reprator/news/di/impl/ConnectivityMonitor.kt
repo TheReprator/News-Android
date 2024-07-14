@@ -1,4 +1,4 @@
-package dev.reprator.news.di
+package dev.reprator.news.di.impl
 
 import android.annotation.SuppressLint
 import android.content.Context

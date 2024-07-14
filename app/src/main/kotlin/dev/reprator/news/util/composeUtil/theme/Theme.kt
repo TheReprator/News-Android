@@ -1,4 +1,4 @@
-package dev.reprator.news.ui.theme
+package dev.reprator.news.util.composeUtil.theme
 
 import android.app.Activity
 import android.app.UiModeManager

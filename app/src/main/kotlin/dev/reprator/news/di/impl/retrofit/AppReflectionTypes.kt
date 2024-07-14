@@ -1,4 +1,4 @@
-package dev.reprator.news.impl.retrofit
+package dev.reprator.news.di.impl.retrofit
 
 import java.lang.reflect.GenericArrayType
 import java.lang.reflect.Modifier
@@ -7,8 +7,9 @@ import java.lang.reflect.Type
 import java.lang.reflect.TypeVariable
 import java.lang.reflect.WildcardType
 import java.util.Arrays
+import javax.inject.Inject
 
-class AppReflectionTypes {
+class AppReflectionTypes @Inject constructor(){
 
     private val EMPTY_TYPE_ARRAY = arrayOf<Type>()
 

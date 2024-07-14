@@ -1,21 +1,18 @@
-package dev.reprator.news.ui.newsList.navigation
+package dev.reprator.news.ui.bookmarks.navigation
 
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import dev.reprator.news.ui.newsList.NewsListScreen
+import dev.reprator.news.ui.newsDetail.BookMarkScreen
 
-const val HOME_ROUTE = "home_route"
+const val ROUTE_BOOKMARK = "route_bookmark"
 
-fun NavController.navigateToHome(navOptions: NavOptions) = navigate(HOME_ROUTE, navOptions)
 
-fun NavGraphBuilder.homeScreen(
+fun NavGraphBuilder.bookmarkScreen(
     onClick: () -> Unit,
-    onShowSnackbar: suspend (String, String?) -> Boolean,
+    onShowSnackbar: (String) -> Unit,
 ) {
-    composable(route = HOME_ROUTE) {
-        NewsListScreen({
+    composable(route = ROUTE_BOOKMARK) {
+        BookMarkScreen({
 
         })
     }

@@ -1,8 +1,9 @@
-package dev.reprator.news.domain.repository
+package dev.reprator.news.data.datasource
 
-import dev.reprator.news.modal.ModalNewsList
+import androidx.paging.PagingData
+import dev.reprator.news.modal.ModalNews
 import kotlinx.coroutines.flow.Flow
 
-interface NewsListRepository {
-    suspend fun getNews(): Flow<List<ModalNewsList>>
+interface NewsListRemoteDataSource {
+     fun getNews(source: String): Flow<PagingData<ModalNews>>
 }

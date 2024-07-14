@@ -1,4 +1,23 @@
 package dev.reprator.news.appDb
 
-class RemoteNewsDao {
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import dev.reprator.news.dataSource.local.RemoteNewsKeys
+
+@Dao
+interface RemoteNewsDao {
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(remoteKey: List<RemoteNewsKeys>)
+
+    @Query("Select * From remote_key_news Where source IN (:source) and title IN (:title) and author IN (:author)")
+    suspend fun getRemoteKeyByNewsID(source: String, title: String, author: String): RemoteNewsKeys?
+
+    @Query("Delete From remote_key_news")
+    suspend fun clearRemoteKeys()
+
+    @Query("Select created_at From remote_key_news Order By created_at DESC LIMIT 1")
+    suspend fun getCreationTime(): Long?
 }

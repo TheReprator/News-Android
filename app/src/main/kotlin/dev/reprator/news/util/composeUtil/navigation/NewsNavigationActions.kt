@@ -1,5 +1,6 @@
-package dev.reprator.news.ui.composeUtil.navigation
+package dev.reprator.news.util.composeUtil.navigation
 
+import android.graphics.drawable.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmarks
 import androidx.compose.material.icons.filled.Home
@@ -10,7 +11,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import dev.reprator.news.R
 import dev.reprator.news.ui.bookmarks.navigation.ROUTE_BOOKMARK
-import dev.reprator.news.ui.newsDetail.navigation.navigateToNewsDetail
 import dev.reprator.news.ui.newsList.navigation.ROUTE_NEWS
 
 data class NewsTopLevelDestination(
@@ -37,8 +37,6 @@ class NewsNavigationActions(private val navController: NavHostController) {
             restoreState = true
         }
     }
-
-    fun navigateToDetail() = navController.navigateToNewsDetail()
 }
 
 val TOP_LEVEL_DESTINATIONS = listOf(
@@ -55,5 +53,9 @@ val TOP_LEVEL_DESTINATIONS = listOf(
         unselectedIcon = Icons.Outlined.Bookmarks,
         iconTextId = R.string.tab_bookmarks
     )
-
 )
+
+fun NewsTopLevelDestination.selectedIcon(selectedDestination: String): ImageVector{
+    val isSelected = selectedDestination == route
+    return if(isSelected) selectedIcon else unselectedIcon
+}

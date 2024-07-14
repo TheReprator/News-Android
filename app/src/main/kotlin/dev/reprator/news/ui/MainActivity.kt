@@ -1,22 +1,22 @@
-package dev.reprator.news
+package dev.reprator.news.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
-import dev.reprator.news.ui.theme.NewsAndroidTheme
+import dev.reprator.news.util.composeUtil.LocalWindowSizeClass
+import dev.reprator.news.util.composeUtil.theme.ContrastAwareNewsTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         enableEdgeToEdge()
@@ -24,30 +24,53 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            NewsAndroidTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+            CompositionLocalProvider(
+                LocalWindowSizeClass provides calculateWindowSizeClass()
+            ) {
+                ContrastAwareNewsTheme {
+                    NewsApp()
                 }
             }
         }
     }
 }
 
+
+@Preview(showBackground = true, widthDp = 500, heightDp = 700)
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun NewsAppPreviewTabletPortrait() {
+    ComposeLocalWrapper {
+        ContrastAwareNewsTheme {
+            NewsApp()
+        }
+    }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 1100, heightDp = 600)
 @Composable
-fun GreetingPreview() {
-    NewsAndroidTheme {
-        Greeting("Android")
+fun NewsAppPreviewDesktop() {
+    ComposeLocalWrapper {
+        ContrastAwareNewsTheme {
+            NewsApp()
+        }
     }
+}
+
+@Preview(showBackground = true, widthDp = 600, heightDp = 1100)
+@Composable
+fun NewsAppPreviewDesktopPortrait() {
+    ComposeLocalWrapper {
+        ContrastAwareNewsTheme {
+            NewsApp()
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+@Composable
+fun ComposeLocalWrapper(content: @Composable () -> Unit) {
+    CompositionLocalProvider(
+        LocalWindowSizeClass provides calculateWindowSizeClass(),
+        content = content
+    )
 }

@@ -1,8 +1,9 @@
-package dev.reprator.news.impl
+package dev.reprator.news.di.impl
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import javax.inject.Inject
 
 interface AppCoroutineDispatchers {
     val main: CoroutineDispatcher
@@ -12,10 +13,14 @@ interface AppCoroutineDispatchers {
     val singleThread: CoroutineDispatcher
 }
 
-data class AppCoroutineDispatchersImpl @OptIn(ExperimentalCoroutinesApi::class) constructor(
-    override val main: CoroutineDispatcher = Dispatchers.Main,
-    override val default: CoroutineDispatcher = Dispatchers.IO.limitedParallelism(1),
-    override val io: CoroutineDispatcher = Dispatchers.IO.limitedParallelism(1),
-    override val computation: CoroutineDispatcher = Dispatchers.Default,
-    override val singleThread: CoroutineDispatcher = Dispatchers.IO
-) : AppCoroutineDispatchers
+@OptIn(ExperimentalCoroutinesApi::class)
+data class AppCoroutineDispatchersImpl @Inject constructor(
+    override val main: CoroutineDispatcher,
+    override val default: CoroutineDispatcher,
+    override val io: CoroutineDispatcher,
+    override val computation: CoroutineDispatcher,
+    override val singleThread: CoroutineDispatcher
+) : AppCoroutineDispatchers {
+    constructor(): this(Dispatchers.Main, Dispatchers.IO.limitedParallelism(1),
+        Dispatchers.IO.limitedParallelism(4), Dispatchers.Default, Dispatchers.IO)
+}

@@ -1,4 +1,4 @@
-package dev.reprator.news.impl.retrofit
+package dev.reprator.news.di.impl.retrofit
 
 import okhttp3.ResponseBody
 import retrofit2.Converter

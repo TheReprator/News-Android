@@ -1,4 +1,4 @@
-package dev.reprator.news.ui.composeUtil
+package dev.reprator.news.util.composeUtil
 
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.staticCompositionLocalOf

@@ -1,13 +1,14 @@
-package dev.reprator.news.impl.retrofit
+package dev.reprator.news.di.impl.retrofit
 
 import java.lang.reflect.Type
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.Retrofit
 import javax.inject.Inject
+import javax.inject.Provider
 
 class EnvelopeConverterFactory @Inject constructor(
-    private val types: AppReflectionTypes, private val parseError: ParseError): Converter.Factory() {
+    private val types: AppReflectionTypes, private val parseError: Provider<ParseError>): Converter.Factory() {
 
     override fun responseBodyConverter(
         type: Type,
@@ -20,7 +21,7 @@ class EnvelopeConverterFactory @Inject constructor(
         val delegate: Converter<ResponseBody, EntityResponseContainer<Type>> =
             retrofit.nextResponseBodyConverter(this, envelopeType, annotations)
 
-        return EnvelopeConverter(delegate, parseError)
+        return EnvelopeConverter(delegate, parseError.get())
     }
 
 }

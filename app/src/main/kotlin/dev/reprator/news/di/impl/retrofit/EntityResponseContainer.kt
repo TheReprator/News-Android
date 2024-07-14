@@ -1,4 +1,4 @@
-package dev.reprator.news.impl.retrofit
+package dev.reprator.news.di.impl.retrofit
 
 import kotlinx.serialization.Serializable
 

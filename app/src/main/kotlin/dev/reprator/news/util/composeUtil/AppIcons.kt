@@ -1,6 +1,8 @@
-package dev.reprator.news.ui.composeUtil
+package dev.reprator.news.util.composeUtil
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.filled.Dataset
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.ui.graphics.vector.ImageVector
 import dev.reprator.news.R
@@ -10,4 +12,5 @@ import dev.reprator.news.R
  */
 object AppIcons {
     val Refresh = Icons.Default.Refresh to R.string.retry
+    val CLOCK = Icons.Default.AccessTime to R.string.publistedAt
 }

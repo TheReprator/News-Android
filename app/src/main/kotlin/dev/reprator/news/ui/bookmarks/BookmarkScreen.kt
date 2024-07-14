@@ -14,7 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
-internal fun NewsDetailScreen(
+internal fun BookMarkScreen(
     onNewsClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -25,14 +25,14 @@ internal fun NewsDetailScreen(
     ) {
         Text(
             modifier = Modifier.padding(8.dp),
-            text = "EmptyComingSoon",
+            text = "Bookmark EmptyComingSoon",
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.primary
         )
         Text(
             modifier = Modifier.padding(horizontal = 8.dp),
-            text = "EmptyComingSoon sub",
+            text = "Bookmark EmptyComingSoon sub",
             style = MaterialTheme.typography.bodySmall,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.outline
