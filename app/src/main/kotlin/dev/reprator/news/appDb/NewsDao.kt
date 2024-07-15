@@ -20,9 +20,12 @@ interface NewsDao {
     @Update
     fun updateNews(dbNews: ModalNews): Int
 
-    @Query("Select * From news where isBookMarked = 1")
-    fun getBookMarkedItems(): List<ModalNews>
+    @Query("Select * From news where category IN (:category) AND isBookMarked = 1")
+    fun getBookMarkedItemsByCategory(category: String): List<ModalNews>
 
-    @Query("Delete From news")
-    suspend fun clearAllNews()
+    @Query("Select * From news where isBookMarked = 1")
+    fun getBookMarkedItems(): PagingSource<Int, ModalNews>
+
+    @Query("Delete From news where category IN (:category)")
+    suspend fun clearAllNewsByCategory(category: String)
 }

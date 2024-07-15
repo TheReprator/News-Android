@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c037efe1d7fb0362ecb854c09d15ef97",
+    "identityHash": "de47714d8a2b5f7a7f50f50ac9001ea2",
     "entities": [
       {
         "tableName": "news",
@@ -82,8 +82,14 @@
       },
       {
         "tableName": "remote_key_news",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`source` TEXT NOT NULL, `author` TEXT NOT NULL, `title` TEXT NOT NULL, `prevKey` INTEGER, `currentPage` INTEGER NOT NULL, `nextKey` INTEGER, `created_at` INTEGER NOT NULL, PRIMARY KEY(`title`, `source`, `author`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`category` TEXT NOT NULL, `source` TEXT NOT NULL, `author` TEXT NOT NULL, `title` TEXT NOT NULL, `prevKey` INTEGER, `currentPage` INTEGER NOT NULL, `nextKey` INTEGER, `created_at` INTEGER NOT NULL, PRIMARY KEY(`title`, `source`, `author`))",
         "fields": [
+          {
+            "fieldPath": "category",
+            "columnName": "category",
+            "affinity": "TEXT",
+            "notNull": true
+          },
           {
             "fieldPath": "source",
             "columnName": "source",
@@ -142,7 +148,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c037efe1d7fb0362ecb854c09d15ef97')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'de47714d8a2b5f7a7f50f50ac9001ea2')"
     ]
   }
 }

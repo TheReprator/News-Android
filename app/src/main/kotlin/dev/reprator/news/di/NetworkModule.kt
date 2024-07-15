@@ -68,7 +68,8 @@ internal object NetworkModule {
 
     @Provides
     @IntoSet
-    fun provideApiKeyInterceptor(): Interceptor = ApiKeyInterceptor(BuildConfig.KEY_NEWS_API_ORG)
+    fun provideApiKeyInterceptor(): Interceptor = ApiKeyInterceptor("93b69f7e2db9497cb31ffef8f97752ae")
+    //fun provideApiKeyInterceptor(): Interceptor = ApiKeyInterceptor(BuildConfig.KEY_NEWS_API_ORG)
 
     @Provides
     fun provideOkHttpClient(
@@ -100,7 +101,7 @@ internal object NetworkModule {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .callFactory { okHttpClient.get().newCall(it) }
-            //.addConverterFactory(converterFactory)
+            .addConverterFactory(converterFactory)
             .addConverterFactory(
                 json.asConverterFactory("application/json".toMediaType()),
             )

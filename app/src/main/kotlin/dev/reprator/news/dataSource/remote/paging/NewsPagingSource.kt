@@ -11,7 +11,6 @@ import dev.reprator.news.dataSource.remote.NewsApiService
 import dev.reprator.news.dataSource.remote.mapper.NewsMapper
 import dev.reprator.news.modal.ModalNews
 import dev.reprator.news.util.mapAll
-import kotlinx.coroutines.delay
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
@@ -72,17 +71,12 @@ class NewsPagingSource(
             }
         }
 
-        Timber.e("MovieRemoteMediator: load() called with: loadType = $loadType, itemsCount = ${state.pages.count()}, page: $page, anchorPosition=${state.anchorPosition}, stateLastItem = ${state.isEmpty()}")
+        Timber.e("MovieRemoteMediator: load() called with: loadType = $loadType, itemsCount = ${state.pages.count()}, page: $page, anchorPosition=${state.anchorPosition}, stateLastItem = ${state.isEmpty()}, sources=$sources")
 
         return try {
-            val newsResponse =
+            val news =
                 newsApi.getHeadLines(sources = sources, page = page, pageSize = state.config.pageSize)
 
-            if (!"ok".equals(newsResponse.status.orEmpty(), true)) {
-                throw Exception("")
-            }
-
-            val news = newsResponse.articles.orEmpty()
             val endOfPaginationReached = news.isEmpty()
 
             appDb.withTransaction {
@@ -90,10 +84,10 @@ class NewsPagingSource(
                 val bookMarkList = mutableListOf<ModalNews>()
 
                 if (loadType == LoadType.REFRESH) {
-                    bookMarkList.addAll(appDb.getNewsDao().getBookMarkedItems())
+                    bookMarkList.addAll(appDb.getNewsDao().getBookMarkedItemsByCategory(sources))
 
-                    appDb.getRemoteKeysDao().clearRemoteKeys()
-                    appDb.getNewsDao().clearAllNews()
+                    appDb.getRemoteKeysDao().clearRemoteKeysByCategory(sources)
+                    appDb.getNewsDao().clearAllNewsByCategory(sources)
                 }
 
                 val prevKey = if (page > 1) page - 1 else null
@@ -103,6 +97,7 @@ class NewsPagingSource(
 
                 val remoteList = itemModalNewsList.map {
                     RemoteNewsKeys(
+                        category = sources,
                         source = it.source,
                         title = it.title,
                         author = it.author,
@@ -117,7 +112,7 @@ class NewsPagingSource(
                     val isBookMarkedIndex = bookMarkList.indexOfFirst { item ->
                         (item.author.equals(it.author, true) && item.title.equals(it.title, true))
                     }
-                    val isBookMarked = -1 > isBookMarkedIndex
+                    val isBookMarked = -1 < isBookMarkedIndex
 
                     it.copy(isBookMarked = isBookMarked, category = sources)
                 }
@@ -133,13 +128,13 @@ class NewsPagingSource(
 
     override suspend fun initialize(): InitializeAction {
         val cacheTimeout = TimeUnit.MILLISECONDS.convert(6, TimeUnit.HOURS)
+        val lastUpdateBySource = appDb.getRemoteKeysDao().getCreationTimeByCategory(category = sources)
 
-        return if (System.currentTimeMillis() - (appDb.getRemoteKeysDao().getCreationTime()
-                ?: 0) < cacheTimeout
-        ) {
+        return if (System.currentTimeMillis() - (lastUpdateBySource ?: 0) < cacheTimeout) {
             InitializeAction.SKIP_INITIAL_REFRESH
         } else {
             InitializeAction.LAUNCH_INITIAL_REFRESH
         }
+
     }
 }

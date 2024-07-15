@@ -3,8 +3,6 @@ package dev.reprator.news.util.composeUtil.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,7 +21,9 @@ import coil.compose.AsyncImagePainter.State.Loading
 import coil.compose.rememberAsyncImagePainter
 import dev.reprator.news.R
 
-
+/**
+ * A wrapper around [AsyncImage] which determines the colorFilter based on the theme
+ */
 @Composable
 fun DynamicAsyncImage(
     imageUrl: String,
@@ -45,16 +45,20 @@ fun DynamicAsyncImage(
         modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
-        if (isError && !isLocalInspection) {
-            AppViewLoader(Modifier.align(Alignment.Center))
-        }
-
         if (isLoading && !isLocalInspection) {
-            Image(
-                painter = painterResource(R.drawable.ic_network),
-                contentDescription = contentDescription,
+            AppViewLoader(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .size(80.dp)
             )
         }
+
+        val result0 = isError
+        val result01 = isLoading
+        val result02 = !isLocalInspection
+        val result1 = isError && !isLocalInspection
+        val result2 = isLoading && !isLocalInspection
+        val result3 = isError.not() && !isLocalInspection
 
         Image(
             contentScale = ContentScale.Crop,

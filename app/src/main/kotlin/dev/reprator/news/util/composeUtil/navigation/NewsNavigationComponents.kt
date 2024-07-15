@@ -25,7 +25,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -37,7 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
-import dev.reprator.news.ui.newsList.navigation.ROUTE_NEWS
+import dev.reprator.news.presentation.newsList.navigation.ROUTE_NEWS
 import dev.reprator.news.util.composeUtil.LocalWindowSizeClass
 import dev.reprator.news.util.composeUtil.theme.ContrastAwareNewsTheme
 
@@ -59,7 +58,7 @@ internal enum class NavigationType {
 
 @Composable
 fun NewsNavigationWrapper(
-    snackbarHostState: SnackbarHostState,
+    snackBarHostState: SnackbarHostState,
     selectedDestination: String,
     navigateToTopLevelDestination: (NewsTopLevelDestination) -> Unit,
     content: @Composable PaddingValues.() -> Unit
@@ -79,7 +78,7 @@ fun NewsNavigationWrapper(
                 )
             }
         }
-    }, snackbarHost = { SnackbarHost(snackbarHostState) }) { contentPadding ->
+    }, snackbarHost = { SnackbarHost(snackBarHostState) }) { contentPadding ->
 
         Row(modifier = Modifier.fillMaxSize().padding(contentPadding)) {
 
@@ -114,27 +113,27 @@ private fun HomeNavigationDrawer(
             .padding(16.dp)
             .widthIn(max = 280.dp),
     ) {
-        TOP_LEVEL_DESTINATIONS.forEach { replyDestination ->
+        TOP_LEVEL_DESTINATIONS.forEach { destination ->
             NavigationDrawerItem(
-                selected = selectedDestination == replyDestination.route,
+                selected = selectedDestination == destination.route,
                 label = {
                     Text(
-                        text = stringResource(id = replyDestination.iconTextId),
+                        text = stringResource(id = destination.iconTextId),
                         modifier = Modifier.padding(horizontal = 16.dp)
                     )
                 },
                 icon = {
                     Icon(
-                        imageVector = replyDestination.selectedIcon(selectedDestination),
+                        imageVector = destination.selectedIcon(selectedDestination),
                         contentDescription = stringResource(
-                            id = replyDestination.iconTextId
+                            id = destination.iconTextId
                         )
                     )
                 },
                 colors = NavigationDrawerItemDefaults.colors(
                     unselectedContainerColor = Color.Transparent
                 ),
-                onClick = { navigateToTopLevelDestination(replyDestination) }
+                onClick = { navigateToTopLevelDestination(destination) }
             )
         }
     }
@@ -149,21 +148,21 @@ private fun HomeNavigationRail(
 ) {
     NavigationRail(modifier = modifier) {
         Spacer(Modifier.weight(1f))
-        TOP_LEVEL_DESTINATIONS.forEach { replyDestination ->
+        TOP_LEVEL_DESTINATIONS.forEach { destination ->
             NavigationRailItem(
-                selected = selectedDestination == replyDestination.route,
-                onClick = { navigateToTopLevelDestination(replyDestination) },
+                selected = selectedDestination == destination.route,
+                onClick = { navigateToTopLevelDestination(destination) },
                 icon = {
                     Icon(
-                        imageVector = replyDestination.selectedIcon(selectedDestination),
+                        imageVector = destination.selectedIcon(selectedDestination),
                         contentDescription = stringResource(
-                            id = replyDestination.iconTextId
+                            id = destination.iconTextId
                         )
                     )
                 },
                 label = {
                     Text(
-                        text = stringResource(id = replyDestination.iconTextId),
+                        text = stringResource(id = destination.iconTextId),
                         modifier = Modifier.padding(horizontal = 16.dp)
                     )
                 },
@@ -180,19 +179,19 @@ fun HomeNavigationBar(
     navigateToTopLevelDestination: (NewsTopLevelDestination) -> Unit
 ) {
     NavigationBar(modifier = Modifier.fillMaxWidth()) {
-        TOP_LEVEL_DESTINATIONS.forEach { replyDestination ->
+        TOP_LEVEL_DESTINATIONS.forEach { destination ->
             NavigationBarItem(
-                selected = selectedDestination == replyDestination.route,
-                onClick = { navigateToTopLevelDestination(replyDestination) },
+                selected = selectedDestination == destination.route,
+                onClick = { navigateToTopLevelDestination(destination) },
                 icon = {
                     Icon(
-                        imageVector = replyDestination.selectedIcon(selectedDestination),
-                        contentDescription = stringResource(id = replyDestination.iconTextId)
+                        imageVector = destination.selectedIcon(selectedDestination),
+                        contentDescription = stringResource(id = destination.iconTextId)
                     )
                 },
                 label = {
                     Text(
-                        text = stringResource(id = replyDestination.iconTextId),
+                        text = stringResource(id = destination.iconTextId),
                         modifier = Modifier.padding(horizontal = 16.dp)
                     )
                 },

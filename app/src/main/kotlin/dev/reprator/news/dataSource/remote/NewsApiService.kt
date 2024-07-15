@@ -1,7 +1,6 @@
 package dev.reprator.news.dataSource.remote
 
 import dev.reprator.news.dataSource.remote.model.EntityNews
-import dev.reprator.news.dataSource.remote.model.EntityNewsContainer
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -12,6 +11,6 @@ interface NewsApiService {
         @Query("category") sources: String,
         @Query("page") page: Int,
         @Query("pageSize") pageSize: Int,
-    ): EntityNewsContainer<EntityNews>
+    ): List<EntityNews>
 
 }

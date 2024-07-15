@@ -5,6 +5,7 @@ import androidx.room.Entity
 
 @Entity(tableName = "remote_key_news", primaryKeys= [ "title", "source", "author"])
 data class RemoteNewsKeys(
+    val category: String,
     val source: String,
     val author: String,
     val title: String,

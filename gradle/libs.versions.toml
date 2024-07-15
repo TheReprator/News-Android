@@ -15,7 +15,7 @@ kotlinx-SerializationJson = "1.7.1"
 androidx-CoreSplashscreen = "1.0.1"
 androidx-coreKtx = "1.13.1"
 androidx-DataStore = "1.1.1"
-androidx-Navigation = "2.8.0-beta04"
+androidx-Navigation = "2.8.0-beta05"
 androidx-Work = "2.9.0"
 androidx-Activity = "1.9.0"
 androidx-AppCompat = "1.7.0"
@@ -25,10 +25,9 @@ androidx-lifecycle = "2.8.3"
 androidx-Tracing = "1.3.0-alpha02"
 
 composeBom = "2024.06.00"
-compose-androidx-Alpha="1.7.0-beta04"
+compose-androidx-Alpha="1.7.0-beta05"
 compose-androidx-HiltNavigation = "1.2.0"
 compose-androidx-Material3-Adaptive = "1.0.0-beta04"
-compose-androidx-Material3-AdaptiveNavigationSuite = "1.3.0-beta04"
 compose-androidx-RuntimeTracing = "1.0.0-beta01"
 
 ksp = "2.0.0-1.0.23"
@@ -69,7 +68,6 @@ androidx-compose-foundation-layout = { group = "androidx.compose.foundation", na
 androidx-compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
 
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
-androidx-compose-material3-navigationSuite = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite", version.ref = "compose-androidx-Material3-AdaptiveNavigationSuite" }
 androidx-compose-material3-adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive", version.ref = "compose-androidx-Material3-Adaptive" }
 androidx-compose-material3-adaptive-layout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout", version.ref = "compose-androidx-Material3-Adaptive" }
 androidx-compose-material3-adaptive-navigation = { group = "androidx.compose.material3.adaptive", name = "adaptive-navigation", version.ref = "compose-androidx-Material3-Adaptive" }

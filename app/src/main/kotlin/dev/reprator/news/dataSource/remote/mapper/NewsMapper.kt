@@ -9,8 +9,10 @@ import javax.inject.Inject
 class NewsMapper @Inject constructor(): Mapper<EntityNews, ModalNews>{
 
     override fun map(from: EntityNews): ModalNews {
-        return ModalNews(from.source?.name.orEmpty(), from.author.orEmpty(), from.title.orEmpty(), from.description.orEmpty(),
-            from.url.orEmpty(), from.urlToImage.orEmpty(),
-            from.publishedAt?.toEpochMilliseconds() ?: Clock.System.now().epochSeconds, from.content.orEmpty())
+        return ModalNews(source=from.source?.name.orEmpty(), author = from.author.orEmpty(),
+            title = from.title.orEmpty(), description = from.description.orEmpty(),
+            url = from.url.orEmpty(), urlToImage = from.urlToImage.orEmpty(),
+            publishedAt = from.publishedAt?.toEpochMilliseconds() ?: Clock.System.now().epochSeconds,
+            content = from.content.orEmpty(), isBookMarked = false, category = "")
     }
 }

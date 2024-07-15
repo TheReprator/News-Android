@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 class EntityResponseContainer<T>(
     val status: String,
-    val data: T
+    val articles: T
 )
 
 

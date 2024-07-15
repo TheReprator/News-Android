@@ -14,6 +14,11 @@
     <string name="news_category_sports">sports</string>
     <string name="news_category_technology">technology</string>
 
+    <string name="back_button">back button</string>
+
+    <string name="bookmark_added">News bookmarked</string>
+    <string name="bookmark_removed">News bookmarked removed</string>
+
     <string-array name="news_category">
         <item>@string/news_category_general</item>
         <item>@string/news_category_business</item>
@@ -23,8 +28,4 @@
         <item>@string/news_category_sports</item>
         <item>@string/news_category_technology</item>
     </string-array>
-
-
-    LoadStates(refresh=Error(endOfPaginationReached=false, error=kotlinx.serialization.json.internal.JsonDecodingException: Unexpected JSON token at offset 755: Unexpected symbol '-' in numeric literal at path: $.articles[0].publishedAt
-    JSON input: .....rlToImage":null,"publishedAt":"2024-07-13T08:38:25Z","conten.....), prepend=NotLoading(endOfPaginationReached=false), append=NotLoading(endOfPaginationReached=false))
 </resources>

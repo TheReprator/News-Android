@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import dev.reprator.news.R
 
 @Composable
-fun EmptyScreen(message: String) {
+fun EmptyScreen(message: String, modifier: Modifier = Modifier) {
 
     var startAnimation by remember {
         mutableStateOf(false)
@@ -37,26 +37,26 @@ fun EmptyScreen(message: String) {
 
     val alphaAnimation by animateFloatAsState(
         targetValue = if (startAnimation) 0.3f else 0f,
-        animationSpec = tween(durationMillis = 1000)
+        animationSpec = tween(durationMillis = 1000), label = ""
     )
 
     LaunchedEffect(key1 = true) {
         startAnimation = true
     }
 
-    EmptyContent(alphaAnim = alphaAnimation, message = message)
+    EmptyContent(alphaAnim = alphaAnimation, message = message, modifier)
 
 }
 
 @Composable
-fun EmptyContent(alphaAnim: Float, message: String) {
+fun EmptyContent(alphaAnim: Float, message: String, modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Icon(
-            painter = painterResource(R.mipmap.ic_launcher),
+            painter = painterResource(R.drawable.ic_launcher_foreground),
             contentDescription = null,
             tint = if (isSystemInDarkTheme()) LightGray else DarkGray,
             modifier = Modifier

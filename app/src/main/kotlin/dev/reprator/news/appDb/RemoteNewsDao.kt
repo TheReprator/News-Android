@@ -15,9 +15,9 @@ interface RemoteNewsDao {
     @Query("Select * From remote_key_news Where source IN (:source) and title IN (:title) and author IN (:author)")
     suspend fun getRemoteKeyByNewsID(source: String, title: String, author: String): RemoteNewsKeys?
 
-    @Query("Delete From remote_key_news")
-    suspend fun clearRemoteKeys()
+    @Query("Delete From remote_key_news Where category IN (:category)")
+    suspend fun clearRemoteKeysByCategory(category: String)
 
-    @Query("Select created_at From remote_key_news Order By created_at DESC LIMIT 1")
-    suspend fun getCreationTime(): Long?
+    @Query("Select created_at From remote_key_news Where category IN (:category) Order By created_at DESC LIMIT 1")
+    suspend fun getCreationTimeByCategory(category: String): Long?
 }

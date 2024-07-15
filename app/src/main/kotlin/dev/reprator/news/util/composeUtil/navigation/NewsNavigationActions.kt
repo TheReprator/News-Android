@@ -1,17 +1,14 @@
 package dev.reprator.news.util.composeUtil.navigation
 
-import android.graphics.drawable.Icon
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Bookmarks
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.outlined.Bookmarks
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import dev.reprator.news.R
-import dev.reprator.news.ui.bookmarks.navigation.ROUTE_BOOKMARK
-import dev.reprator.news.ui.newsList.navigation.ROUTE_NEWS
+import dev.reprator.news.presentation.bookmarks.navigation.ROUTE_BOOKMARK
+import dev.reprator.news.presentation.newsList.navigation.ROUTE_NEWS
+import dev.reprator.news.util.composeUtil.AppIcons.NAV_SELECTED_BOOKMARK
+import dev.reprator.news.util.composeUtil.AppIcons.NAV_SELECTED_HOME
+import dev.reprator.news.util.composeUtil.AppIcons.NAV_UNSELECTED_BOOKMARK
+import dev.reprator.news.util.composeUtil.AppIcons.NAV_UNSELECTED_HOME
 
 data class NewsTopLevelDestination(
     val route: String,
@@ -24,16 +21,10 @@ class NewsNavigationActions(private val navController: NavHostController) {
 
     fun navigateTo(destination: NewsTopLevelDestination) {
         navController.navigate(destination.route) {
-            // Pop up to the start destination of the graph to
-            // avoid building up a large stack of destinations
-            // on the back stack as users select items
             popUpTo(navController.graph.findStartDestination().id) {
                 saveState = true
             }
-            // Avoid multiple copies of the same destination when
-            // reselecting the same item
             launchSingleTop = true
-            // Restore state when reselecting a previously selected item
             restoreState = true
         }
     }
@@ -42,16 +33,16 @@ class NewsNavigationActions(private val navController: NavHostController) {
 val TOP_LEVEL_DESTINATIONS = listOf(
     NewsTopLevelDestination(
         route = ROUTE_NEWS,
-        selectedIcon = Icons.Default.Home,
-        unselectedIcon = Icons.Outlined.Home,
-        iconTextId = R.string.tab_home
+        selectedIcon = NAV_SELECTED_HOME.first,
+        unselectedIcon = NAV_UNSELECTED_HOME.first,
+        iconTextId = NAV_SELECTED_HOME.second
     ),
 
     NewsTopLevelDestination(
         route = ROUTE_BOOKMARK,
-        selectedIcon = Icons.Default.Bookmarks,
-        unselectedIcon = Icons.Outlined.Bookmarks,
-        iconTextId = R.string.tab_bookmarks
+        selectedIcon = NAV_SELECTED_BOOKMARK.first,
+        unselectedIcon = NAV_UNSELECTED_BOOKMARK.first,
+        iconTextId = NAV_SELECTED_BOOKMARK.second
     )
 )
 
