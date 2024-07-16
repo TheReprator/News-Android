@@ -10,20 +10,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color.Companion.Unspecified
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter.State.Error
 import coil.compose.AsyncImagePainter.State.Loading
 import coil.compose.rememberAsyncImagePainter
 import dev.reprator.news.R
+import dev.reprator.news.util.composeUtil.LocalTintTheme
+import timber.log.Timber
 
-/**
- * A wrapper around [AsyncImage] which determines the colorFilter based on the theme
- */
 @Composable
 fun DynamicAsyncImage(
     imageUrl: String,
@@ -31,6 +31,7 @@ fun DynamicAsyncImage(
     modifier: Modifier = Modifier,
     placeholder: Painter = painterResource(R.drawable.ic_launcher_foreground),
 ) {
+    val iconTint = LocalTintTheme.current.iconTint
     var isLoading by remember { mutableStateOf(true) }
     var isError by remember { mutableStateOf(false) }
     val imageLoader = rememberAsyncImagePainter(
@@ -49,21 +50,15 @@ fun DynamicAsyncImage(
             AppViewLoader(
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .size(80.dp)
+                    .size(60.dp),
             )
         }
-
-        val result0 = isError
-        val result01 = isLoading
-        val result02 = !isLocalInspection
-        val result1 = isError && !isLocalInspection
-        val result2 = isLoading && !isLocalInspection
-        val result3 = isError.not() && !isLocalInspection
-
+        Timber.e("imageState:: isError:- $isError, isLoading:- $isLoading, isLocalInspection:- $isLocalInspection")
         Image(
             contentScale = ContentScale.Crop,
             painter = if (isError.not() && !isLocalInspection) imageLoader else placeholder,
             contentDescription = contentDescription,
+            colorFilter = if (iconTint != Unspecified) ColorFilter.tint(iconTint) else null,
         )
     }
 }

@@ -34,6 +34,8 @@ private const val BASE_URL = "https://newsapi.org"
 private const val CONNECTION_TIME = 20L
 private const val CACHE_SIZE = (50 * 1024 * 1024).toLong()
 
+const val CACHE_PATH = "cache_newsApp"
+
 @Module
 @InstallIn(SingletonComponent::class)
 internal object NetworkModule {
@@ -53,7 +55,7 @@ internal object NetworkModule {
     fun provideFile(
         @ApplicationContext context: Context
     ): File {
-        return File(context.cacheDir, "cache_newsApp")
+        return File(context.cacheDir, CACHE_PATH)
     }
 
     @Provides
@@ -68,8 +70,7 @@ internal object NetworkModule {
 
     @Provides
     @IntoSet
-    fun provideApiKeyInterceptor(): Interceptor = ApiKeyInterceptor("93b69f7e2db9497cb31ffef8f97752ae")
-    //fun provideApiKeyInterceptor(): Interceptor = ApiKeyInterceptor(BuildConfig.KEY_NEWS_API_ORG)
+    fun provideApiKeyInterceptor(): Interceptor = ApiKeyInterceptor(BuildConfig.KEY_NEWS_API_ORG)
 
     @Provides
     fun provideOkHttpClient(
