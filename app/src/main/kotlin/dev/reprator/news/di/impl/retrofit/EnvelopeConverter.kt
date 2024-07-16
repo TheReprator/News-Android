@@ -13,7 +13,7 @@ class EnvelopeConverter<T> constructor(
         val container = delegate.convert(value) ?: return null
 
         return if("ok".equals(container.status, true))
-            container.data
+            container.articles
         else
             throw ApiFailureException(parseError.parseError(value))
     }

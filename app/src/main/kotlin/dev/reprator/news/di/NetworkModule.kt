@@ -34,6 +34,8 @@ private const val BASE_URL = "https://newsapi.org"
 private const val CONNECTION_TIME = 20L
 private const val CACHE_SIZE = (50 * 1024 * 1024).toLong()
 
+const val CACHE_PATH = "cache_newsApp"
+
 @Module
 @InstallIn(SingletonComponent::class)
 internal object NetworkModule {
@@ -53,7 +55,7 @@ internal object NetworkModule {
     fun provideFile(
         @ApplicationContext context: Context
     ): File {
-        return File(context.cacheDir, "cache_newsApp")
+        return File(context.cacheDir, CACHE_PATH)
     }
 
     @Provides
@@ -100,7 +102,7 @@ internal object NetworkModule {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .callFactory { okHttpClient.get().newCall(it) }
-            //.addConverterFactory(converterFactory)
+            .addConverterFactory(converterFactory)
             .addConverterFactory(
                 json.asConverterFactory("application/json".toMediaType()),
             )
