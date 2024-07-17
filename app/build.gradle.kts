@@ -65,6 +65,10 @@ android {
 composeCompiler {
     enableStrongSkippingMode = true
 
+    val composeReports = layout.buildDirectory.map { it.dir("reports").dir("compose") }
+    reportsDestination.set(composeReports)
+    metricsDestination.set(composeReports)
+
     reportsDestination = layout.buildDirectory.dir("compose_compiler")
     stabilityConfigurationFile = rootProject.layout.projectDirectory.file("compose_compiler_config.conf")
 }

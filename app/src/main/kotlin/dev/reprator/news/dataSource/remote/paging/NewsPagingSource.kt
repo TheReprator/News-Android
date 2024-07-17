@@ -127,7 +127,7 @@ class NewsPagingSource(
     }
 
     override suspend fun initialize(): InitializeAction {
-        val cacheTimeout = TimeUnit.MILLISECONDS.convert(6, TimeUnit.HOURS)
+        val cacheTimeout = TimeUnit.MILLISECONDS.convert(6, TimeUnit.DAYS)
         val lastUpdateBySource = appDb.getRemoteKeysDao().getCreationTimeByCategory(category = sources)
 
         return if (System.currentTimeMillis() - (lastUpdateBySource ?: 0) < cacheTimeout) {
