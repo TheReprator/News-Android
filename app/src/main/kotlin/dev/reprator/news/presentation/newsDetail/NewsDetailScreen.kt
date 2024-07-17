@@ -1,16 +1,13 @@
 package dev.reprator.news.presentation.newsDetail
 
-
 import android.view.ViewGroup
-import android.webkit.WebView
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,55 +35,40 @@ internal fun NewsDetailScreen(
 ) {
     var modalNews by remember { mutableStateOf(viewModel.newsItem) }
 
-    NewsDetailScreen(modalNews, onBackPress) {
+    NewsDetailScreenContainer(modalNews, onBackPress) {
         modalNews = modalNews.copy(isBookMarked = !modalNews.isBookMarked)
         viewModel.updateBookMarks(modalNews)
     }
 }
 
 @Composable
-fun NewsDetailScreen(modalNews: ModalNews, onBackPress: () -> Unit, updateBookMark: () -> Unit) {
-
+fun NewsDetailScreenContainer(
+    news: ModalNews,
+    onBackPress: () -> Unit,
+    updateBookMark: () -> Unit
+) {
     var loaderDialogScreen by remember { mutableStateOf(true) }
 
-    Box {
-        Column {
-            NewsAppBar(modalNews.title, onBackPress)
-
-            WebView(modalNews.url) {
+    Scaffold(topBar = {
+        NewsAppBar(news.title, onBackPress)
+    }, floatingActionButton = {
+        NDSFloatingActionButton(news.isBookMarked, updateBookMark)
+    }) {
+        Box {
+            NDSWebView(news.url, {
                 loaderDialogScreen = it
-            }
+            },modifier = Modifier.padding(it))
 
             if (loaderDialogScreen)
-                AppViewLoader(Modifier.fillMaxSize())
-        }
-
-        FloatingActionButton(
-            onClick = updateBookMark,
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(end = 10.dp, bottom = 20.dp),
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            contentColor = MaterialTheme.colorScheme.onTertiaryContainer
-        ) {
-            val icon = if (modalNews.isBookMarked)
-                AppIcons.NAV_SELECTED_BOOKMARK.first to R.string.bookmark_added
-            else
-                AppIcons.NAV_UNSELECTED_BOOKMARK.first to R.string.bookmark_removed
-
-            Icon(
-                imageVector = icon.first,
-                contentDescription = stringResource(id = icon.second),
-                modifier = Modifier.size(18.dp)
-            )
+                AppViewLoader(Modifier.align(Alignment.Center))
         }
     }
 }
 
 @Composable
-fun WebView(url: String, isLoaded: (Boolean) -> Unit) {
-    AndroidView(factory = {
-        WebView(it).apply {
+fun NDSWebView(url: String, isLoaded: (Boolean) -> Unit, modifier: Modifier = Modifier) {
+    AndroidView(modifier = modifier, factory = {
+        android.webkit.WebView(it).apply {
             layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
@@ -99,6 +81,30 @@ fun WebView(url: String, isLoaded: (Boolean) -> Unit) {
     })
 }
 
+@Composable
+fun NDSFloatingActionButton(
+    isBookMarked: Boolean,
+    updateBookMark: () -> Unit
+) {
+
+    FloatingActionButton(
+        onClick = updateBookMark,
+        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+        contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+    ) {
+        val icon = if (isBookMarked)
+            AppIcons.NAV_SELECTED_BOOKMARK.first to R.string.bookmark_added
+        else
+            AppIcons.NAV_UNSELECTED_BOOKMARK.first to R.string.bookmark_removed
+
+        Icon(
+            imageVector = icon.first,
+            contentDescription = stringResource(id = icon.second),
+            modifier = Modifier.size(18.dp)
+        )
+    }
+}
+
 @Preview(showBackground = true, name = "Bookmarked News")
 @Composable
 fun PreviewNewsDetailBookMark() {
@@ -109,7 +115,7 @@ fun PreviewNewsDetailBookMark() {
                 "description", "https://www.google.com", "https://www.google.com",
                 System.currentTimeMillis(), "content", true, category = ""
             )
-            NewsDetailScreen(newsItem, {}, {})
+            NewsDetailScreenContainer(newsItem, {}, {})
         }
     }
 }
@@ -124,7 +130,7 @@ fun PreviewNewsDetailBookMarkRemoved() {
                 "description", "https://www.google.com", "https://www.google.com",
                 System.currentTimeMillis(), "content", false, category = ""
             )
-            NewsDetailScreen(newsItem, {}, {})
+            NewsDetailScreenContainer(newsItem, {}, {})
         }
     }
 }
