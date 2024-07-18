@@ -1,8 +1,12 @@
 package dev.reprator.news.presentation.newsList.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -24,6 +28,7 @@ internal fun NewsListScreen(
     onNewsClick: (ModalNews) -> Unit,
     showToast:(String) -> Unit,
     snackBarHostState: SnackbarHostState,
+    modifier: Modifier = Modifier,
     viewModel: NewsListViewModel = hiltViewModel(),
 ) {
     val paginatedNewsList = viewModel.paginatedNews.collectAsLazyPagingItems()
@@ -40,7 +45,7 @@ internal fun NewsListScreen(
         }
     }
 
-    Column {
+    Column(modifier = modifier.windowInsetsPadding(WindowInsets.statusBars)) {
         NewsCategoryTab(categoryArray.toList(), pagerState)
         NewsHorizontalPagerContent(pagerState, paginatedNewsList, onNewsClick, {
             paginatedNewsList.refresh()

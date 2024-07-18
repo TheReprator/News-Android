@@ -74,10 +74,6 @@ composeCompiler {
 }
 
 dependencies {
-    implementation(libs.timber)
-
-    implementation(libs.androidx.lifecycle.process)
-
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.android)
@@ -87,9 +83,9 @@ dependencies {
     implementation(libs.androidx.compose.foundation.layout)
     implementation(libs.androidx.compose.material.iconsExtended)
     implementation(libs.androidx.compose.material3)
-    implementation(libs.compose.material3.windowsizeclass)
 
-    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.compose.material3.adaptive)
+    implementation(libs.androidx.compose.material3.adaptive.navigation)
 
     implementation(libs.androidx.compose.ui.tooling.preview)
     debugImplementation(libs.androidx.compose.ui.tooling)
@@ -97,6 +93,7 @@ dependencies {
     implementation(libs.coil.kt.compose)
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.svg)
+
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.okhttp.logging)
     implementation(libs.retrofit.core)
@@ -106,11 +103,14 @@ dependencies {
     implementation(libs.androidx.activity.compose)
 
     implementation(libs.androidx.tracing.ktx)
-
     implementation(libs.kotlinx.datetime)
     
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.paging.runtime)
+
+    implementation(libs.timber)
+    implementation(libs.androidx.lifecycle.process)
+    implementation(libs.androidx.navigation.compose)
 
     ksp(libs.room.compiler)
     implementation(libs.room.runtime)

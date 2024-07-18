@@ -46,6 +46,7 @@ fun NewsCategoryTab(
     val selectedIndex = pagerState.currentPage
 
     ScrollableTabRow(
+        containerColor = MaterialTheme.colorScheme.inverseOnSurface,
         selectedTabIndex = selectedIndex,
         divider = {
             Spacer(modifier = Modifier.height(5.dp))

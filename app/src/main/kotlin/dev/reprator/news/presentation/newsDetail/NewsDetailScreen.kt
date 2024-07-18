@@ -1,5 +1,6 @@
 package dev.reprator.news.presentation.newsDetail
 
+import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -41,6 +42,7 @@ internal fun NewsDetailScreen(
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun NewsDetailScreenContainer(
     news: ModalNews,
@@ -57,7 +59,7 @@ fun NewsDetailScreenContainer(
         Box {
             NDSWebView(news.url, {
                 loaderDialogScreen = it
-            },modifier = Modifier.padding(it))
+            })
 
             if (loaderDialogScreen)
                 AppViewLoader(Modifier.align(Alignment.Center))

@@ -28,4 +28,60 @@
         <item>@string/news_category_sports</item>
         <item>@string/news_category_technology</item>
     </string-array>
+
+    <string name="time_second_singular">second</string>
+    <string name="time_second_plural">seconds</string>
+    <plurals name="time_seconds">
+        <item quantity="one">@string/time_second_singular</item>
+        <item quantity="other">@string/time_second_plural</item>
+    </plurals>
+
+    <string name="time_minute_singular">minute</string>
+    <string name="time_minute_plural">minutes</string>
+    <plurals name="time_minutes">
+        <item quantity="one">@string/time_minute_singular</item>
+        <item quantity="other">@string/time_minute_plural</item>
+    </plurals>
+
+    <string name="time_hour_singular">hour</string>
+    <string name="time_hour_plural">hours</string>
+    <plurals name="time_hours">
+        <item quantity="one">@string/time_hour_singular</item>
+        <item quantity="other">@string/time_hour_plural</item>
+    </plurals>
+
+    <string name="time_day_singular">day</string>
+    <string name="time_day_plural">days</string>
+    <plurals name="time_days">
+        <item quantity="one">@string/time_day_singular</item>
+        <item quantity="other">@string/time_day_plural</item>
+    </plurals>
+
+    <string name="time_week_singular">week</string>
+    <string name="time_week_plural">weeks</string>
+    <plurals name="time_weeks">
+        <item quantity="one">@string/time_week_singular</item>
+        <item quantity="other">@string/time_week_plural</item>
+    </plurals>
+
+    <string name="time_months_singular">month</string>
+    <string name="time_months_plural">months</string>
+    <plurals name="time_months">
+        <item quantity="one">@string/time_months_singular</item>
+        <item quantity="other">@string/time_months_plural</item>
+    </plurals>
+
+    <string name="time_minute_year">year</string>
+    <string name="time_minute_years">years</string>
+    <plurals name="time_years">
+        <item quantity="one">@string/time_minute_year</item>
+        <item quantity="other">@string/time_minute_years</item>
+    </plurals>
+
+    <string name="time_ago">${time} ago</string>
+    <string name="time_in_future">in ${time}</string>
+    <string name="time_now">now</string>
+
+    <string name="navigation_drawer">Navigation Drawer</string>
+    <string name="close_drawer">Close drawer</string>
 </resources>
