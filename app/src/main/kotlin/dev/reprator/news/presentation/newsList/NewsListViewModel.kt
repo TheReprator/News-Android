@@ -1,5 +1,6 @@
 package dev.reprator.news.presentation.newsList
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -16,19 +17,31 @@ import dev.reprator.news.modal.ModalNews
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
+private const val ARG_NEWS_ITEM = "argNewsItem"
+
 @HiltViewModel
 class NewsListViewModel @Inject constructor(
     private val appDb: AppNewsDatabase,
     private val newsApi: NewsApiService,
     private val mapper: NewsMapper,
-    private val pagingConfig: PagingConfig
+    private val pagingConfig: PagingConfig,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    val selectedNews: StateFlow<ModalNews?> by lazy {
+        savedStateHandle.getStateFlow(ARG_NEWS_ITEM, savedStateHandle[ARG_NEWS_ITEM])
+    }
+
+    fun onNewsClick(news: ModalNews) {
+        savedStateHandle[ARG_NEWS_ITEM] = news
+    }
 
     private val category = MutableStateFlow("")
 

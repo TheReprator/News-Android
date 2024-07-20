@@ -83,7 +83,9 @@ fun NewsHorizontalPagerContent(
     newsClick: (ModalNews) -> Unit,
     reload: () -> Unit,
     showToast: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    selectedNews: ModalNews ?= null,
+    highlightSelectedNews: Boolean = false,
 ) {
     HorizontalPager(
         state = pagerState,
@@ -102,7 +104,8 @@ fun NewsHorizontalPagerContent(
             }) { index ->
 
                 news[index]?.let {
-                    NewsCard(article = it, onClick = newsClick)
+                    val isSelectedItem = highlightSelectedNews && selectedNews == it
+                    NewsCard(article = it, onClick = newsClick, isSelected = isSelectedItem)
                 }
             }
 

@@ -36,10 +36,20 @@ internal fun NewsDetailScreen(
 ) {
     var modalNews by remember { mutableStateOf(viewModel.newsItem) }
 
-    NewsDetailScreenContainer(modalNews, onBackPress) {
+    NewsDetailScreen(modalNews, true, onBackPress) {
         modalNews = modalNews.copy(isBookMarked = !modalNews.isBookMarked)
         viewModel.updateBookMarks(modalNews)
     }
+}
+
+@Composable
+internal fun NewsDetailScreen(
+    news: ModalNews,
+    shouldShowBack: Boolean,
+    onBackPress: () -> Unit,
+    updateBookMark: () -> Unit,
+) {
+    NewsDetailScreenContainer(news, onBackPress, updateBookMark, shouldShowBack)
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -47,12 +57,13 @@ internal fun NewsDetailScreen(
 fun NewsDetailScreenContainer(
     news: ModalNews,
     onBackPress: () -> Unit,
-    updateBookMark: () -> Unit
+    updateBookMark: () -> Unit,
+    shouldShowBack: Boolean = false,
 ) {
     var loaderDialogScreen by remember { mutableStateOf(true) }
 
     Scaffold(topBar = {
-        NewsAppBar(news.title, onBackPress)
+        NewsAppBar(news.title, onBackPress, shouldShowBack = shouldShowBack)
     }, floatingActionButton = {
         NDSFloatingActionButton(news.isBookMarked, updateBookMark)
     }) {
@@ -86,13 +97,15 @@ fun NDSWebView(url: String, isLoaded: (Boolean) -> Unit, modifier: Modifier = Mo
 @Composable
 fun NDSFloatingActionButton(
     isBookMarked: Boolean,
-    updateBookMark: () -> Unit
+    updateBookMark: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
 
     FloatingActionButton(
         onClick = updateBookMark,
         containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-        contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+        contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+        modifier = modifier
     ) {
         val icon = if (isBookMarked)
             AppIcons.NAV_SELECTED_BOOKMARK.first to R.string.bookmark_added

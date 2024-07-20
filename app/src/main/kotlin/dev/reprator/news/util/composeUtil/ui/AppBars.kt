@@ -28,7 +28,8 @@ import dev.reprator.news.util.composeUtil.theme.ContrastAwareNewsTheme
 fun NewsAppBar(
     title: String,
     onBackPressed: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    shouldShowBack: Boolean = false,
 ) {
     TopAppBar(
         modifier = modifier,
@@ -47,7 +48,8 @@ fun NewsAppBar(
             )
         },
         navigationIcon = {
-            FilledIconButton(
+            if(shouldShowBack)
+                FilledIconButton(
                 onClick = onBackPressed,
                 modifier = Modifier.padding(8.dp),
                 colors = IconButtonDefaults.filledIconButtonColors(
@@ -60,7 +62,8 @@ fun NewsAppBar(
                     contentDescription = stringResource(id = AppIcons.BACK.second),
                     modifier = Modifier.size(14.dp)
                 )
-            }
+            } else
+                null
         }
     )
 }

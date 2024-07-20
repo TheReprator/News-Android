@@ -41,8 +41,16 @@ fun NewsCard(
     article: ModalNews,
     onClick: (ModalNews) -> Unit,
     modifier: Modifier = Modifier,
+    isSelected: Boolean = false
 ) {
     Card(
+        colors = CardDefaults.cardColors(
+            containerColor = if (isSelected) {
+                MaterialTheme.colorScheme.inversePrimary
+            } else {
+                MaterialTheme.colorScheme.surfaceVariant
+            },
+        ),
         modifier = modifier
             .padding(5.dp)
             .fillMaxWidth()
@@ -115,6 +123,29 @@ fun PreviewArticleCard() {
                     isBookMarked = false,
                     urlToImage = "https://ichef.bbci.co.uk/live-experience/cps/624/cpsprodpb/11787/production/_124395517_bbcbreakingnewsgraphic.jpg"
                 ), {})
+        }
+    }
+}
+
+@Preview
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun PreviewArticleCardSelected() {
+    ComposeLocalWrapper {
+        ContrastAwareNewsTheme {
+            NewsCard(
+                article = ModalNews(
+                    category = "Tech",
+                    author = "Vikram Singh",
+                    content = "Vikram Content",
+                    description = "Vikram description",
+                    publishedAt = System.currentTimeMillis(),
+                    source = "BBC",
+                    title = "Her train broke down. Her phone died. And then she met her Saver in a",
+                    url = "",
+                    isBookMarked = false,
+                    urlToImage = "https://ichef.bbci.co.uk/live-experience/cps/624/cpsprodpb/11787/production/_124395517_bbcbreakingnewsgraphic.jpg"
+                ), {}, isSelected = true)
         }
     }
 }
