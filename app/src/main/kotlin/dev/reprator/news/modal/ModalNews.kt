@@ -9,22 +9,37 @@ import kotlinx.serialization.Serializable
 
 @Parcelize
 @Immutable
-@Serializable
-@Entity(tableName = "news", primaryKeys= [ "title", "source", "author"])
+@Entity(tableName = "news", primaryKeys = ["title", "source", "author"])
 data class ModalNews(
-    val source: String,
-    val author: String,
-    val title: String,
+    val id: ModalNewsId,
     val description: String,
     val url: String,
     val urlToImage: String,
     val publishedAt: Long,
     val content: String,
-    val isBookMarked: Boolean,
+    val personalisation: ModalNewsPersonalisation,
     val category: String
-): Parcelable {
+) : Parcelable {
     @IgnoredOnParcel
     val uniqueKey by lazy {
-        "$publishedAt, $source, $author, $title"
+        "$publishedAt, $id"
     }
 }
+
+
+@Parcelize
+@Immutable
+@Serializable
+data class ModalNewsId(
+    val source: String,
+    val author: String,
+    val title: String
+) : Parcelable
+
+
+@Parcelize
+@Immutable
+@Serializable
+data class ModalNewsPersonalisation(
+    val isBookMarked: Boolean,
+): Parcelable

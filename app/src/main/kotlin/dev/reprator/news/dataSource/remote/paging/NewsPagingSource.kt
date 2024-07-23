@@ -135,6 +135,5 @@ class NewsPagingSource(
         } else {
             InitializeAction.LAUNCH_INITIAL_REFRESH
         }
-
     }
 }
