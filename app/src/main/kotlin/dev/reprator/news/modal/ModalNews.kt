@@ -42,4 +42,6 @@ data class ModalNewsId(
 @Serializable
 data class ModalNewsPersonalisation(
     val isBookMarked: Boolean,
-): Parcelable
+): Parcelable {
+    constructor(): this(false)
+}

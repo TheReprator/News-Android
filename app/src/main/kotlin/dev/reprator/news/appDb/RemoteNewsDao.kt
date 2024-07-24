@@ -5,9 +5,10 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import dev.reprator.news.dataSource.local.RemoteNewsKeys
+import dev.reprator.news.util.pagination.RemoteDBDao
 
 @Dao
-interface RemoteNewsDao {
+interface RemoteNewsDao: RemoteDBDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(remoteKey: List<RemoteNewsKeys>)

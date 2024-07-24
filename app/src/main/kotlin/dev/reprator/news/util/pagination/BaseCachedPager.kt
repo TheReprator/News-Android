@@ -5,26 +5,26 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.PagingSource
-import androidx.paging.PagingState
-import androidx.paging.RemoteMediator.MediatorResult
 import androidx.paging.cachedIn
 import androidx.paging.map
-import dev.reprator.news.modal.ModalNews
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 
-
+@OptIn(ExperimentalPagingApi::class)
 abstract class BaseCachedPager<DataType : Any, IdKey : Any, Personalisation : Any>(
     coroutineScope: CoroutineScope,
     val daoFetcher: () -> PagingSource<Int, DataType>,
 ) {
     private var pagingSource: DefaultPagingSource<DataType>? = null
-    @OptIn(ExperimentalPagingApi::class)
     val pagingDataStream: Flow<PagingData<DataType>> by lazy {
 
         Pager(
-            config = PagingConfig(pageSize),
+            config = PagingConfig(
+                pageSize = 20,
+                prefetchDistance = 2,
+                initialLoadSize = 19
+            ),
             pagingSourceFactory = {
                 daoFetcher()
             },
@@ -52,9 +52,5 @@ abstract class BaseCachedPager<DataType : Any, IdKey : Any, Personalisation : An
     }
 
     fun retry() {
-    }
-
-    companion object {
-        const val pageSize = 20
     }
 }
