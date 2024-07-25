@@ -104,7 +104,7 @@ fun NewsHorizontalPagerContent(
             }) { index ->
 
                 news[index]?.let {
-                    val isSelectedItem = highlightSelectedNews && selectedNews == it
+                    val isSelectedItem = highlightSelectedNews && selectedNews?.id == it.id
                     NewsCard(article = it, onClick = newsClick, isSelected = isSelectedItem)
                 }
             }

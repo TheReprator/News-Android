@@ -1,5 +1,6 @@
 package dev.reprator.news.util.pagination
 
+import androidx.paging.DataSource
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -14,20 +15,15 @@ import kotlinx.coroutines.flow.combine
 @OptIn(ExperimentalPagingApi::class)
 abstract class BaseCachedPager<DataType : Any, IdKey : Any, Personalisation : Any>(
     coroutineScope: CoroutineScope,
-    val daoFetcher: () -> PagingSource<Int, DataType>,
+    private val pageConfig: PagingConfig,
+    private val daoFetcher: () -> DataSource.Factory<Int, DataType>,
 ) {
     private var pagingSource: DefaultPagingSource<DataType>? = null
     val pagingDataStream: Flow<PagingData<DataType>> by lazy {
 
         Pager(
-            config = PagingConfig(
-                pageSize = 20,
-                prefetchDistance = 2,
-                initialLoadSize = 19
-            ),
-            pagingSourceFactory = {
-                daoFetcher()
-            },
+            config = pageConfig,
+            pagingSourceFactory = daoFetcher().asPagingSourceFactory(),
             remoteMediator = createPagingSource().apply { pagingSource = this }
         ).flow
             .cachedIn(coroutineScope)
@@ -46,11 +42,5 @@ abstract class BaseCachedPager<DataType : Any, IdKey : Any, Personalisation : An
 
     open fun createPagingHandle(): PagingHandle<DataType> {
         return PagingHandleImpl(this)
-    }
-
-    fun refresh() {
-    }
-
-    fun retry() {
     }
 }

@@ -4,13 +4,12 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import androidx.room.RawQuery
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalPagingApi::class)
 class DefaultPagingSource<T : Any>(
-    private val remoteDao: RemoteDBDao,
+    private val remoteDao: PagingRemoteDBDao<T>,
+    private val initializeAction: suspend () -> InitializeAction,
     val dataFetcher: suspend (Boolean, Int, PagingState<Int, T>) -> List<T>,
 ) : RemoteMediator<Int, T>() {
 
@@ -71,23 +70,14 @@ class DefaultPagingSource<T : Any>(
     }
 
     override suspend fun initialize(): InitializeAction {
-        val cacheTimeout = TimeUnit.MILLISECONDS.convert(6, TimeUnit.DAYS)
-        val lastUpdateBySource = remoteDao.getCreationTime()?.createdAt
-
-        return if (System.currentTimeMillis() - (lastUpdateBySource ?: 0) < cacheTimeout) {
-            InitializeAction.SKIP_INITIAL_REFRESH
-        } else {
-            InitializeAction.LAUNCH_INITIAL_REFRESH
-        }
+        return initializeAction()
     }
 }
 
 
-interface RemoteDBDao {
-    @RawQuery
-    suspend fun <T>getItem(input: T): DBRemotePagingEntity
-    @RawQuery
-    suspend fun getCreationTime(vararg input: String): DBRemotePagingEntity?
+interface PagingRemoteDBDao<T> {
+    suspend fun getItem(input: T): DBRemotePagingEntity
+    suspend fun getCreationTime(vararg input: String): Long?
 }
 
 interface DBRemotePagingEntity {

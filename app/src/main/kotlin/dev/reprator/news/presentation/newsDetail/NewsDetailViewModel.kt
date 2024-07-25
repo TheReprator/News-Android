@@ -24,7 +24,7 @@ class NewsDetailViewModel @Inject constructor(
 
     fun updateBookMarks(item: ModalNews) {
         viewModelScope.launch(dispatchers.io) {
-            localNewsDao.updateNews(item)
+           // localNewsDao.updateNews(item)
         }
     }
 }

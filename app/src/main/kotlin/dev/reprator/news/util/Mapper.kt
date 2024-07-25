@@ -4,6 +4,11 @@ fun interface Mapper<Input, Output> {
     fun map(from: Input): Output
 }
 
+interface MapperToFrom<Input, Output> {
+    fun mapTo(from: Input): Output
+    fun mapFrom(from: Output): Input
+}
+
 fun interface MapperAddition<Input, SupportingInput, Output> {
     fun map(from: Input, supportingInput: SupportingInput): Output
 }

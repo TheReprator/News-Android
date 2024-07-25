@@ -27,7 +27,6 @@ internal fun NewsListScreen(
     modifier: Modifier = Modifier,
     viewModel: NewsListViewModel = hiltViewModel(),
     highlightSelectedNews: Boolean = false,
-    refreshList:() -> Unit ={}
 ) {
     val paginatedNewsList = viewModel.paginatedNews.collectAsLazyPagingItems()
     val selectedNews = viewModel.selectedNews.collectAsState()

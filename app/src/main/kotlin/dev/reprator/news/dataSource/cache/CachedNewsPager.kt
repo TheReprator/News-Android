@@ -1,27 +1,43 @@
 package dev.reprator.news.dataSource.cache
 
-import androidx.paging.PagingSource
-import dev.reprator.news.dataSource.local.DBNewsPersonalisation
+import androidx.paging.DataSource
+import androidx.paging.PagingConfig
 import dev.reprator.news.modal.ModalNews
 import dev.reprator.news.modal.ModalNewsId
+import dev.reprator.news.modal.ModalNewsPersonalisation
 import dev.reprator.news.util.pagination.BaseCachedPager
 import dev.reprator.news.util.pagination.DefaultPagingSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
 class CachedNewsPager(
+    pageConfig: PagingConfig,
     private val characterCache: NewsCache,
     coroutineScope: CoroutineScope,
-    daoFetcher: () -> PagingSource<Int, ModalNews>,
+    daoFetcher: () -> DataSource.Factory<Int, ModalNews>,
     private val pagingFactory: () -> DefaultPagingSource<ModalNews>,
-) : BaseCachedPager<ModalNews, ModalNewsId, DBNewsPersonalisation>(coroutineScope, daoFetcher) {
+) : BaseCachedPager<ModalNews, ModalNewsId, ModalNewsPersonalisation>(
+    coroutineScope, pageConfig, daoFetcher
+) {
 
-    override fun getCachedInfoStream(): Flow<Map<ModalNewsId, DBNewsPersonalisation>> {
+    override fun getCachedInfoStream(): Flow<Map<ModalNewsId, ModalNewsPersonalisation>> {
         return characterCache.getNewsPersonalisationStream()
     }
 
-    override fun mergeWithCache(item: ModalNews, cachedInfo: Map<ModalNewsId, DBNewsPersonalisation>): ModalNews {
-        return item.resolveCachedPersonalisation(cachedInfo)
+    override fun mergeWithCache(
+        item: ModalNews,
+        cachedInfo: Map<ModalNewsId, ModalNewsPersonalisation>
+    ): ModalNews {
+        val cachedPersonalisation = cachedInfo[item.id]
+        val result =  if (null != cachedPersonalisation) {
+            val personalisation = ModalNewsPersonalisation(
+                isBookMarked = cachedPersonalisation.isBookMarked)
+            item.copy(personalisation = personalisation)
+        } else {
+            item
+        }
+
+        return result
     }
 
     override fun createPagingSource(): DefaultPagingSource<ModalNews> {

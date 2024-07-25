@@ -6,7 +6,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.reprator.news.appDb.NewsDao
 import dev.reprator.news.di.impl.AppCoroutineDispatchers
+import dev.reprator.news.domain.NewsRepository
 import dev.reprator.news.modal.ModalNews
+import dev.reprator.news.modal.ModalNewsPersonalisation
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,7 +18,7 @@ private const val ARG_NEWS_ITEM = "argNewsItem"
 @HiltViewModel
 class NewsPaneViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val localNewsDao: NewsDao,
+    private val newsRepository: NewsRepository,
     private val dispatchers: AppCoroutineDispatchers,
 ) : ViewModel() {
 
@@ -30,9 +32,9 @@ class NewsPaneViewModel @Inject constructor(
 
     fun updateBookMarks() {
         viewModelScope.launch(dispatchers.io) {
-            val update = selectedNews.value!!.copy(isBookMarked = !selectedNews.value!!.isBookMarked)
+            val update = selectedNews.value!!.copy(personalisation = ModalNewsPersonalisation(!selectedNews.value!!.personalisation.isBookMarked))
             onNewsClick(update)
-            localNewsDao.updateNews(update)
+            newsRepository.setNewsIsBookMarked(selectedNews.value!!.id, update.personalisation.isBookMarked)
         }
     }
 }

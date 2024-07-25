@@ -96,9 +96,6 @@ internal fun NewsListDetailScreen(
                         }
                     }, {
                         updateBookMark()
-                        if(listDetailNavigator.isDetailPaneVisible()){
-
-                        }
                     })
                 }
 
