@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.reprator.news.modal.ModalNews
-import dev.reprator.news.presentation.newsDetail.NewsDetailScreen
+import dev.reprator.news.presentation.newsDetail.ui.NewsDetailScreen
 import dev.reprator.news.presentation.newsList.ui.NewsListScreen
 import dev.reprator.news.util.composeUtil.LocalWindowAdaptiveInfo
 

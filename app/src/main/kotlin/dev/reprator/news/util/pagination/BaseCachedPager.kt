@@ -5,7 +5,6 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.PagingSource
 import androidx.paging.cachedIn
 import androidx.paging.map
 import kotlinx.coroutines.CoroutineScope
@@ -18,7 +17,8 @@ abstract class BaseCachedPager<DataType : Any, IdKey : Any, Personalisation : An
     private val pageConfig: PagingConfig,
     private val daoFetcher: () -> DataSource.Factory<Int, DataType>,
 ) {
-    private var pagingSource: DefaultPagingSource<DataType>? = null
+
+    private var pagingSource: DefaultPagingSource<DataType, IdKey>? = null
     val pagingDataStream: Flow<PagingData<DataType>> by lazy {
 
         Pager(
@@ -38,7 +38,7 @@ abstract class BaseCachedPager<DataType : Any, IdKey : Any, Personalisation : An
 
     abstract fun mergeWithCache(item: DataType, cachedInfo: Map<IdKey, Personalisation>): DataType
 
-    abstract fun createPagingSource(): DefaultPagingSource <DataType>
+    abstract fun createPagingSource(): DefaultPagingSource <DataType, IdKey>
 
     open fun createPagingHandle(): PagingHandle<DataType> {
         return PagingHandleImpl(this)

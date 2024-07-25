@@ -1,8 +1,6 @@
 package dev.reprator.news.dataSource
 
-import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingConfig
-import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import dev.reprator.news.appDb.AppNewsDatabase
 import dev.reprator.news.appDb.model.EntityDBNews
@@ -19,7 +17,6 @@ import dev.reprator.news.util.MapperToFrom
 import dev.reprator.news.util.pagination.DefaultPagingSource
 import dev.reprator.news.util.pagination.PagingHandle
 import kotlinx.coroutines.CoroutineScope
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class NewsRepositoryImpl @Inject constructor(
@@ -29,28 +26,18 @@ class NewsRepositoryImpl @Inject constructor(
     private val pageConfig: PagingConfig
 ) : NewsRepository {
 
-    @OptIn(ExperimentalPagingApi::class)
     override fun getNewsStream(newsCategory: String, coroutineScope: CoroutineScope, mapper: MapperToFrom<EntityDBNews, ModalNews>): PagingHandle<ModalNews> {
 
-        suspend fun findMediatorAction(): RemoteMediator.InitializeAction {
-            val cacheTimeout = TimeUnit.MILLISECONDS.convert(6, TimeUnit.DAYS)
-            val lastUpdateBySource = appDb.getRemoteKeysDao().getCreationTime(newsCategory)
-
-            return if (System.currentTimeMillis() - (lastUpdateBySource ?: 0) < cacheTimeout) {
-                RemoteMediator.InitializeAction.SKIP_INITIAL_REFRESH
-            } else {
-                RemoteMediator.InitializeAction.LAUNCH_INITIAL_REFRESH
-            }
-        }
-
         val defaultPagingSource = DefaultPagingSource(appDb.getRemoteKeysDao(), {
-            findMediatorAction()
+            newsCategory
+        },{ input ->
+            EntityDBNewsId(input.id.source, input.id.author, input.id.title)
         }) {  isRefresh, page, pagingState ->
             val apiList =  remoteDataSource.getNews(newsCategory, page, pagingState.config.pageSize)
             handleResponse(apiList, newsCategory, isRefresh, page, mapper)
         }
 
-        val cachedNewsPager = CachedNewsPager(pageConfig, newsCache, coroutineScope, {
+        val cachedNewsPager = CachedNewsPager(coroutineScope, pageConfig, newsCache, {
             appDb.getNewsDao().getNews(newsCategory).map {
                 mapper.mapTo(it)
             }
@@ -104,7 +91,7 @@ class NewsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setNewsIsBookMarked(newsId: ModalNewsId, isBookMarked: Boolean) {
-        newsCache.updateNewsIsBookMarked(newsId, isBookMarked)
+        newsCache.updateNewsIsBookMarked( EntityDBNewsId(newsId.source, newsId.author, newsId.title), isBookMarked)
         appDb.getNewsDao().updateNews(isBookMarked, newsId.source, newsId.title, newsId.author)
     }
 }

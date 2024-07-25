@@ -7,13 +7,14 @@ import androidx.room.Query
 import androidx.room.RawQuery
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
+import dev.reprator.news.appDb.model.EntityDBNewsId
 import dev.reprator.news.appDb.model.EntityDBRemoteNewsKeys
 import dev.reprator.news.modal.ModalNews
 import dev.reprator.news.util.pagination.DBRemotePagingEntity
 import dev.reprator.news.util.pagination.PagingRemoteDBDao
 
 @Dao
-interface RemoteNewsDao: PagingRemoteDBDao<ModalNews> {
+interface RemoteNewsDao: PagingRemoteDBDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(remoteKey: List<EntityDBRemoteNewsKeys>)
@@ -33,9 +34,10 @@ interface RemoteNewsDao: PagingRemoteDBDao<ModalNews> {
     @RawQuery
     suspend fun getCreationTimeQuery(query: SupportSQLiteQuery): Long?
 
-    override suspend fun getItem(input: ModalNews): DBRemotePagingEntity {
+    override suspend fun <T> getItem(input: T): DBRemotePagingEntity {
+        input as EntityDBNewsId
         val query = "Select * From remote_key_news Where source IN (?) and title IN (?) and author IN (?)"
-        val simpleSQLiteQuery = SimpleSQLiteQuery(query, arrayOf(input.id.source, input.id.title, input.id.author))
+        val simpleSQLiteQuery = SimpleSQLiteQuery(query, arrayOf(input.source, input.title, input.author))
         return getItemRawQuery(simpleSQLiteQuery)
     }
 

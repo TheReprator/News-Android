@@ -5,18 +5,24 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalPagingApi::class)
-class DefaultPagingSource<T : Any>(
-    private val remoteDao: PagingRemoteDBDao<T>,
-    private val initializeAction: suspend () -> InitializeAction,
-    val dataFetcher: suspend (Boolean, Int, PagingState<Int, T>) -> List<T>,
+class DefaultPagingSource<T : Any, KeyId>(
+    private val remoteDao: PagingRemoteDBDao,
+    private val initializeParameter: () -> String,
+    private val uniqueId: (T) -> KeyId,
+    private val dataFetcher: suspend (Boolean, Int, PagingState<Int, T>) -> List<T>,
 ) : RemoteMediator<Int, T>() {
+
+    private suspend fun getRemoteItem(item: T): DBRemotePagingEntity? {
+        return remoteDao.getItem(uniqueId(item))
+    }
 
     private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, T>): DBRemotePagingEntity? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.let { localEntity ->
-                remoteDao.getItem(localEntity)
+                getRemoteItem(localEntity)
             }
         }
     }
@@ -25,7 +31,7 @@ class DefaultPagingSource<T : Any>(
         return state.pages.firstOrNull {
             it.data.isNotEmpty()
         }?.data?.firstOrNull()?.let { localEntity ->
-            remoteDao.getItem(localEntity)
+            getRemoteItem(localEntity)
         }
     }
 
@@ -33,7 +39,7 @@ class DefaultPagingSource<T : Any>(
         return state.pages.lastOrNull {
             it.data.isNotEmpty()
         }?.data?.lastOrNull()?.let { localEntity ->
-            remoteDao.getItem(localEntity)
+            getRemoteItem(localEntity)
         }
     }
 
@@ -70,15 +76,22 @@ class DefaultPagingSource<T : Any>(
     }
 
     override suspend fun initialize(): InitializeAction {
-        return initializeAction()
+        val cacheTimeout = TimeUnit.MILLISECONDS.convert(6, TimeUnit.DAYS)
+        val lastUpdateBySource = remoteDao.getCreationTime(initializeParameter())
+
+        return if (System.currentTimeMillis() - (lastUpdateBySource ?: 0) < cacheTimeout) {
+            InitializeAction.SKIP_INITIAL_REFRESH
+        } else {
+            InitializeAction.LAUNCH_INITIAL_REFRESH
+        }
     }
 }
 
-
-interface PagingRemoteDBDao<T> {
-    suspend fun getItem(input: T): DBRemotePagingEntity
+interface PagingRemoteDBDao {
+    suspend fun <T> getItem(input: T): DBRemotePagingEntity
     suspend fun getCreationTime(vararg input: String): Long?
 }
+
 
 interface DBRemotePagingEntity {
     val previousPage: Int?

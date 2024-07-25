@@ -1,6 +1,6 @@
 package dev.reprator.news.dataSource.cache
 
-import dev.reprator.news.modal.ModalNewsId
+import dev.reprator.news.appDb.model.EntityDBNewsId
 import dev.reprator.news.modal.ModalNewsPersonalisation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -9,13 +9,13 @@ import javax.inject.Inject
 class NewsCacheImpl @Inject constructor() : NewsCache {
 
     private val cachedNewsPersonalisationStream =
-        MutableStateFlow<Map<ModalNewsId, ModalNewsPersonalisation>>(emptyMap())
+        MutableStateFlow<Map<EntityDBNewsId, ModalNewsPersonalisation>>(emptyMap())
 
-    override fun getNewsPersonalisationStream(): Flow<Map<ModalNewsId, ModalNewsPersonalisation>> {
+    override fun getNewsPersonalisationStream(): Flow<Map<EntityDBNewsId, ModalNewsPersonalisation>> {
         return cachedNewsPersonalisationStream
     }
 
-    override fun updateNewsIsBookMarked(newsId: ModalNewsId, isBookMarked: Boolean) {
+    override fun updateNewsIsBookMarked(newsId: EntityDBNewsId, isBookMarked: Boolean) {
         updateNewsCache(
             characterId = newsId,
             updatePersonalisation = { cachedPersonalisation ->
@@ -27,7 +27,7 @@ class NewsCacheImpl @Inject constructor() : NewsCache {
     }
 
     private fun updateNewsCache(
-        characterId: ModalNewsId,
+        characterId: EntityDBNewsId,
         updatePersonalisation: (ModalNewsPersonalisation) -> ModalNewsPersonalisation,
     ) {
         val characterPersonalisation =
@@ -40,7 +40,7 @@ class NewsCacheImpl @Inject constructor() : NewsCache {
 
 interface NewsCache {
 
-    fun getNewsPersonalisationStream(): Flow<Map<ModalNewsId, ModalNewsPersonalisation>>
+    fun getNewsPersonalisationStream(): Flow<Map<EntityDBNewsId, ModalNewsPersonalisation>>
 
-    fun updateNewsIsBookMarked(newsId: ModalNewsId, isBookMarked: Boolean)
+    fun updateNewsIsBookMarked(newsId: EntityDBNewsId, isBookMarked: Boolean)
 }

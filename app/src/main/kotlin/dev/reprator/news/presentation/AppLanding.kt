@@ -52,10 +52,6 @@ private fun NewsNavHost(
         startDestination = ROUTE_NEWS_DETAIL,
     ) {
         newsListDetailScreen()
-
-        bookmarkScreen(onClick = {
-        })
-
-
+        bookmarkScreen()
     }
 }

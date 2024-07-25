@@ -1,4 +1,4 @@
-package dev.reprator.news.presentation.newsDetail
+package dev.reprator.news.presentation.newsDetail.ui
 
 import android.annotation.SuppressLint
 import android.view.ViewGroup
@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import dev.reprator.news.R
 import dev.reprator.news.modal.ModalNews
 import dev.reprator.news.modal.ModalNewsPersonalisation
+import dev.reprator.news.presentation.newsDetail.NewsDetailViewModel
 import dev.reprator.news.util.composeUtil.AppIcons
 import dev.reprator.news.util.composeUtil.ui.AppViewLoader
 import dev.reprator.news.util.composeUtil.ui.NewsAppBar

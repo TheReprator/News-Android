@@ -28,13 +28,13 @@ import dev.reprator.news.util.composeUtil.ui.EmptyScreen
 
 @Composable
 internal fun BookMarkScreen(
-    onNewsClick: (ModalNews) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: BookViewModel = hiltViewModel(),
 ) {
     val paginatedNewsList = viewModel.news.collectAsLazyPagingItems()
+
     val lazyListState = rememberLazyListState()
-    BookMarkList(lazyListState, paginatedNewsList, onNewsClick)
+    BookMarkList(lazyListState, paginatedNewsList, {})
 }
 
 @Composable
