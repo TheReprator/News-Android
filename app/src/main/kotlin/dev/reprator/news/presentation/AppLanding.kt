@@ -5,15 +5,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dev.reprator.news.presentation.bookmarks.navigation.bookmarkScreen
-import dev.reprator.news.presentation.newsListDetail.navigation.ROUTE_NEWS_DETAIL
-import dev.reprator.news.presentation.newsListDetail.navigation.newsListDetailScreen
+import dev.reprator.news.presentation.home.navigation.ROUTE_HOME
+import dev.reprator.news.presentation.home.navigation.homeScreen
 import dev.reprator.news.util.composeUtil.navigation.NewsNavigationActions
 import dev.reprator.news.util.composeUtil.navigation.NewsNavigationWrapper
 
@@ -25,7 +24,7 @@ fun NewsApp() {
         NewsNavigationActions(navController)
     }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val selectedDestination = navBackStackEntry?.destination?.route ?: ROUTE_NEWS_DETAIL
+    val selectedDestination = navBackStackEntry?.destination?.route ?: ROUTE_HOME
 
     val snackBarHostState = remember { SnackbarHostState() }
 
@@ -49,9 +48,9 @@ private fun NewsNavHost(
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = ROUTE_NEWS_DETAIL,
+        startDestination = ROUTE_HOME,
     ) {
-        newsListDetailScreen()
+        homeScreen()
         bookmarkScreen()
     }
 }

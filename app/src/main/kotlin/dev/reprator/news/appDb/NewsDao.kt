@@ -5,13 +5,18 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import dev.reprator.news.appDb.model.EntityDBNews
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NewsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(movies: List<EntityDBNews>)
+
+    @Update
+    fun updateNewsByObject(dbNews: EntityDBNews): Int
 
     @Query("Select * From news where category IN (:category)")
     fun getNews(category: String): DataSource.Factory<Int, EntityDBNews>
@@ -21,6 +26,9 @@ interface NewsDao {
 
     @Query("Select * From news where category IN (:category) AND isBookMarked = 1")
     fun getBookMarkedItemsByCategory(category: String): List<EntityDBNews>
+
+    @Query("Select * From news Where source IN (:source) and title IN (:title) and author IN (:author)")
+    fun getNewsById(source: String, title: String, author: String): EntityDBNews?
 
     @Query("Select * From news where isBookMarked = 1")
     fun getBookMarkedItems(): DataSource.Factory<Int, EntityDBNews>

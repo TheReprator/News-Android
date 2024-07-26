@@ -10,12 +10,8 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.Bookmarks
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.ui.graphics.vector.ImageVector
 import dev.reprator.news.R
 
-/**
- * Now in Android icons. Material icons are [ImageVector]s, custom icons are drawable resource IDs.
- */
 object AppIcons {
     val BACK = Icons.AutoMirrored.Filled.ArrowBack to R.string.back_button
     val Refresh = Icons.Default.Refresh to R.string.retry

@@ -2,7 +2,7 @@ package dev.reprator.news.presentation.bookmarks.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import dev.reprator.news.presentation.bookmarks.BookMarkScreen
+import dev.reprator.news.presentation.bookmarks.ui.BookMarkScreen
 
 const val ROUTE_BOOKMARK = "route_bookmark"
 

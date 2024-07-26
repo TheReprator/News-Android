@@ -49,7 +49,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowHeightSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass
 import dev.reprator.news.R
-import dev.reprator.news.presentation.newsListDetail.navigation.ROUTE_NEWS_DETAIL
+import dev.reprator.news.presentation.home.navigation.ROUTE_HOME
 import dev.reprator.news.util.composeUtil.AppIcons
 import dev.reprator.news.util.composeUtil.LocalWindowAdaptiveInfo
 import dev.reprator.news.util.composeUtil.theme.ContrastAwareNewsTheme
@@ -361,7 +361,7 @@ fun NewsNavigationDrawerPreview() {
     val navigationActions = NewsNavigationActions(navController)
 
     ContrastAwareNewsTheme {
-        HomePermanentNavigationDrawer(ROUTE_NEWS_DETAIL, navigationActions::navigateTo)
+        HomePermanentNavigationDrawer(ROUTE_HOME, navigationActions::navigateTo)
     }
 }
 
@@ -373,7 +373,7 @@ fun NewsNavigationRailPreview() {
     val navigationActions = NewsNavigationActions(navController)
 
     ContrastAwareNewsTheme {
-        HomeNavigationRail(ROUTE_NEWS_DETAIL, navigationActions::navigateTo)
+        HomeNavigationRail(ROUTE_HOME, navigationActions::navigateTo)
     }
 }
 
@@ -385,6 +385,6 @@ fun NewsNavigationBottomPreview() {
     val navigationActions = NewsNavigationActions(navController)
 
     ContrastAwareNewsTheme {
-        HomeNavigationBar(ROUTE_NEWS_DETAIL, navigationActions::navigateTo)
+        HomeNavigationBar(ROUTE_HOME, navigationActions::navigateTo)
     }
 }

@@ -1,4 +1,4 @@
-package dev.reprator.news.presentation.newsList.ui
+package dev.reprator.news.presentation.newsPane.newsList
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.core.RepeatMode

@@ -4,7 +4,6 @@ import androidx.paging.PagingConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.components.SingletonComponent
 import dev.reprator.news.appDb.mapper.DbNewsMapper
 import dev.reprator.news.appDb.model.EntityDBNews

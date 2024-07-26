@@ -1,4 +1,4 @@
-package dev.reprator.news.presentation.newsList.ui
+package dev.reprator.news.presentation.newsPane.newsList
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,7 +33,7 @@ import dev.reprator.news.util.composeUtil.theme.Dimens.SmallIconSize
 import dev.reprator.news.util.composeUtil.ui.DynamicAsyncImage
 
 @Composable
-fun NewsCard(
+fun NewsItemCard(
     article: ModalNews,
     onClick: (ModalNews) -> Unit,
     modifier: Modifier = Modifier,
@@ -59,8 +59,8 @@ fun NewsCard(
                 .clip(RoundedCornerShape(4.dp))
         ) {
             DynamicAsyncImage(
-                imageUrl = "https://i.natgeofe.com/n/1f58c33f-56ba-4982-b924-f642e75d8393/Tower11_3x4.jpg",
-                //imageUrl = article.urlToImage,
+                //imageUrl = "https://i.natgeofe.com/n/1f58c33f-56ba-4982-b924-f642e75d8393/Tower11_3x4.jpg",
+                imageUrl = article.urlToImage,
                 contentDescription = null,
                 Modifier
                     .clip(shape = RoundedCornerShape(10.dp)))

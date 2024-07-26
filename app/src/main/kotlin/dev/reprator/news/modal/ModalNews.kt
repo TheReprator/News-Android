@@ -3,7 +3,6 @@ package dev.reprator.news.modal
 import android.os.Parcelable
 import androidx.room.Embedded
 import androidx.room.Entity
-import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
@@ -20,12 +19,7 @@ data class ModalNews(
     @Embedded
     val personalisation: ModalNewsPersonalisation,
     val category: String
-) : Parcelable {
-    @IgnoredOnParcel
-    val uniqueKey by lazy {
-        "$publishedAt, $id"
-    }
-}
+) : Parcelable
 
 
 @Parcelize

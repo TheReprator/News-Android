@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import dev.reprator.news.presentation.bookmarks.navigation.ROUTE_BOOKMARK
-import dev.reprator.news.presentation.newsListDetail.navigation.ROUTE_NEWS_DETAIL
+import dev.reprator.news.presentation.home.navigation.ROUTE_HOME
 import dev.reprator.news.util.composeUtil.AppIcons.NAV_SELECTED_BOOKMARK
 import dev.reprator.news.util.composeUtil.AppIcons.NAV_SELECTED_HOME
 import dev.reprator.news.util.composeUtil.AppIcons.NAV_UNSELECTED_BOOKMARK
@@ -32,7 +32,7 @@ class NewsNavigationActions(private val navController: NavHostController) {
 
 val TOP_LEVEL_DESTINATIONS = listOf(
     NewsTopLevelDestination(
-        route = ROUTE_NEWS_DETAIL,
+        route = ROUTE_HOME,
         selectedIcon = NAV_SELECTED_HOME.first,
         unselectedIcon = NAV_UNSELECTED_HOME.first,
         iconTextId = NAV_SELECTED_HOME.second

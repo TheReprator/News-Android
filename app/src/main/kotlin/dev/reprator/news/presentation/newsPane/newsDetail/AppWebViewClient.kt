@@ -1,4 +1,4 @@
-package dev.reprator.news.presentation.newsDetail.ui
+package dev.reprator.news.presentation.newsPane.newsDetail
 
 import android.graphics.Bitmap
 import android.webkit.WebView
