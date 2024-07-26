@@ -22,12 +22,14 @@ import javax.inject.Singleton
 @Module
 class AppFeatureModule {
 
+    private val PAGE_SIZE = 15
+
     @Provides
     fun providePagingConfig() = PagingConfig(
-        pageSize = 20,
-        prefetchDistance = 2,
-        initialLoadSize = 19,
-        enablePlaceholders = false
+        pageSize = PAGE_SIZE,
+        enablePlaceholders = true,
+        prefetchDistance = 3 * PAGE_SIZE,
+        initialLoadSize = 2 * PAGE_SIZE,
     )
 
     @Singleton

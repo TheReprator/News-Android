@@ -51,7 +51,7 @@ fun EmptyScreen(message: String, modifier: Modifier = Modifier) {
 @Composable
 fun EmptyContent(alphaAnim: Float, message: String, modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().then(modifier),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

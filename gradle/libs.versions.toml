@@ -1,10 +1,11 @@
 [versions]
-agp = "8.7.0-alpha02"
+agp = "8.7.0-alpha03"
 
 sdk-min = "21"
 sdk-target = "34"
 sdk-compile = "34"
 
+androidxMetrics = "1.0.0-beta01"
 accompanist = "0.34.0"
 
 kotlin = "2.0.0"
@@ -15,21 +16,21 @@ kotlinx-SerializationJson = "1.7.1"
 androidx-CoreSplashscreen = "1.0.1"
 androidx-coreKtx = "1.13.1"
 androidx-DataStore = "1.1.1"
-androidx-Navigation = "2.8.0-beta05"
+androidx-Navigation = "2.8.0-beta06"
 androidx-Work = "2.9.0"
-androidx-Activity = "1.9.0"
+androidx-Activity = "1.9.1"
 androidx-AppCompat = "1.7.0"
 androidx-Browser = "1.8.0"
-androidx-paging = "3.3.0"
-androidx-lifecycle = "2.8.3"
+androidx-paging = "3.3.1"
+androidx-lifecycle = "2.8.4"
 androidx-Tracing = "1.3.0-alpha02"
 
 composeBom = "2024.06.00"
-compose-androidx-Alpha="1.7.0-beta05"
+compose-androidx-Alpha="1.7.0-beta06"
 compose-androidx-HiltNavigation = "1.2.0"
 compose-androidx-Material3-Adaptive = "1.0.0-beta04"
 compose-androidx-RuntimeTracing = "1.0.0-beta01"
-material3AdaptiveNavigationSuiteAndroid = "1.3.0-beta04"
+material3AdaptiveNavigationSuiteAndroid = "1.3.0-beta05"
 
 ksp = "2.0.0-1.0.23"
 
@@ -74,6 +75,8 @@ androidx-compose-material3-adaptive = { group = "androidx.compose.material3.adap
 androidx-compose-material3-adaptive-layout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout", version.ref = "compose-androidx-Material3-Adaptive" }
 androidx-compose-material3-adaptive-navigation = { group = "androidx.compose.material3.adaptive", name = "adaptive-navigation", version.ref = "compose-androidx-Material3-Adaptive" }
 androidx-compose-material3-adaptive-navigation-suite = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite-android", version.ref = "material3AdaptiveNavigationSuiteAndroid" }
+
+androidx-metrics = { group = "androidx.metrics", name = "metrics-performance", version.ref = "androidxMetrics" }
 
 androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
 androidx-compose-runtime-tracing = { group = "androidx.compose.runtime", name = "runtime-tracing", version.ref = "compose-androidx-RuntimeTracing" }

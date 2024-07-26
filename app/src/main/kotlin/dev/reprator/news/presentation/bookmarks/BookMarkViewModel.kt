@@ -37,7 +37,7 @@ class BookViewModel @Inject constructor(
             )
     }
 
-    val news = newsRepository.getNewsBookMarkedStream(viewModelScope)
+    val news by lazy { newsRepository.getNewsBookMarkedStream(viewModelScope) }
 
     fun onNewsClick(news: ModalNews) {
         savedStateHandle[ARG_BOOKMARK_ITEM] = news

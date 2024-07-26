@@ -36,7 +36,6 @@ import dev.reprator.news.util.composeUtil.ui.DynamicAsyncImage
 fun NewsItemCard(
     article: ModalNews,
     onClick: (ModalNews) -> Unit,
-    modifier: Modifier = Modifier,
     isSelected: Boolean = false
 ) {
     Card(
@@ -47,7 +46,7 @@ fun NewsItemCard(
                 MaterialTheme.colorScheme.surfaceVariant
             },
         ),
-        modifier = modifier
+        modifier = Modifier
             .padding(5.dp)
             .fillMaxWidth()
             .clickable { onClick(article) },

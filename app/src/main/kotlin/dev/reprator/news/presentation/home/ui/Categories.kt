@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
@@ -21,17 +20,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
+import dev.reprator.news.R
 import dev.reprator.news.modal.ModalNews
 import dev.reprator.news.presentation.newsPane.newsList.NewsList
 import kotlinx.coroutines.launch
 
 @Composable
 fun NewsCategoryTab(
-    tabList: List<String>,
-    pagerState: PagerState = rememberPagerState(pageCount = { tabList.size })
+    selectedIndex: Int,
+    tabList: Array<String>,
+    selectedCategoryIndex:(Int) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val selectedIndex = pagerState.currentPage
 
     ScrollableTabRow(
         containerColor = MaterialTheme.colorScheme.inverseOnSurface,
@@ -53,9 +53,9 @@ fun NewsCategoryTab(
 
     ) {
         tabList.forEachIndexed { index, title ->
-            Tab(selected = pagerState.currentPage == index, onClick = {
+            Tab(selected = selectedIndex == index, onClick = {
                 coroutineScope.launch {
-                    pagerState.animateScrollToPage(index)
+                    selectedCategoryIndex(index)
                 }
             }, text = {
                 Text(text = title)
@@ -81,6 +81,6 @@ fun NewsHorizontalPagerList(
         state = pagerState,
         contentPadding = PaddingValues(horizontal = 20.dp), pageSpacing = 10.dp
     ) {
-        NewsList(news, newsClick, reload, showToast, modifier, listState, selectedNews ,highlightSelectedNews)
+        NewsList(news, newsClick, reload, showToast, modifier, listState, selectedNews ,highlightSelectedNews, emptyStringId = R.string.app_name)
     }
 }

@@ -79,6 +79,8 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.android)
 
+    implementation(libs.androidx.metrics)
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.foundation.layout)

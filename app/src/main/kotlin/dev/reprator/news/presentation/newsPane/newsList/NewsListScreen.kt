@@ -1,9 +1,9 @@
 package dev.reprator.news.presentation.newsPane.newsList
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -31,9 +31,10 @@ fun NewsList(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
     selectedNews: ModalNews? = null,
-    highlightSelectedNews: Boolean = false
+    highlightSelectedNews: Boolean = false,
+    @StringRes emptyStringId: Int = -1
 ) {
-    NewsList(news,newsClick, {}, {}, modifier, lazyListState, selectedNews, highlightSelectedNews)
+    NewsList(news,newsClick, {}, {}, modifier, lazyListState, selectedNews, highlightSelectedNews, emptyStringId)
 }
 
 @Composable
@@ -45,11 +46,11 @@ fun NewsList(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
     selectedNews: ModalNews? = null,
-    highlightSelectedNews: Boolean = false
+    highlightSelectedNews: Boolean = false,
+    @StringRes emptyStringId: Int = -1
 ) {
     LazyColumn(
         state = lazyListState,
-        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(8.dp)
     ) {
@@ -98,7 +99,11 @@ fun NewsList(
                 }
 
                 (news.isEmpty) -> {
-                    EmptyScreen("No data found")
+                    val message = if(-1 == emptyStringId)
+                        "data"
+                    else
+                        stringResource(emptyStringId)
+                    EmptyScreen(stringResource(R.string.no_data, message), Modifier.fillParentMaxSize())
                 }
             }
         }

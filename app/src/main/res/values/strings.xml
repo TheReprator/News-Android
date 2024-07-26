@@ -5,6 +5,7 @@
     <string name="retry">Retry</string>
     <string name="publistedAt">Published At</string>
     <string name="newslist_text_generic_error">An error occurred on loading caused by %s</string>
+    <string name="no_data">No %s found</string>
 
     <string name="news_category_general">general</string>
     <string name="news_category_business">business</string>

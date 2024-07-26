@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
@@ -20,6 +22,9 @@ import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaf
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
@@ -34,6 +39,7 @@ import dev.reprator.news.presentation.newsPane.newsDetail.NewsDetailScreen
 import dev.reprator.news.util.composeUtil.LocalWindowAdaptiveInfo
 import dev.reprator.news.util.composeUtil.isDetailPaneVisible
 import dev.reprator.news.util.composeUtil.isListPaneVisible
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun HomeScreen(
@@ -43,20 +49,46 @@ internal fun HomeScreen(
     val paginatedNewsList = viewModel.paginatedNews.collectAsLazyPagingItems()
     val selectedNews by viewModel.selectedNews.collectAsStateWithLifecycle()
 
+    val categoryArray = stringArrayResource(R.array.news_category)
+
+    val initialIndex = remember {
+        mutableIntStateOf(0)
+    }
+
+    val pagerState = rememberPagerState(
+        initialPage = initialIndex.intValue,
+        initialPageOffsetFraction = 0f,
+        pageCount = { categoryArray.size })
+
+    LaunchedEffect(pagerState) {
+        snapshotFlow { pagerState.currentPage }.collect { index ->
+            initialIndex.intValue = index
+            viewModel.setPrimaryCategory(categoryArray[index])
+        }
+    }
+
+    val lazyListState = rememberLazyListState()
+
     HomePaneScreen(
-        paginatedNewsList, selectedNews = selectedNews, viewModel::setPrimaryCategory,
-        viewModel::onNewsClick, viewModel::updateBookMarks
+        categoryArray, paginatedNewsList, selectedNews = selectedNews,
+        viewModel::onNewsClick, viewModel::updateBookMarks, lazyListState, pagerState
     )
 }
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 internal fun HomePaneScreen(
+    categoryArray: Array<String>,
     paginatedNewsList: LazyPagingItems<ModalNews>,
     selectedNews: ModalNews?,
-    onCategoryClick: (String) -> Unit,
     onNewsClick: (ModalNews) -> Unit,
     updateBookMark: () -> Unit,
+    listState: LazyListState = rememberLazyListState(),
+    pagerState: PagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f,
+        pageCount = { categoryArray.size }
+    )
 ) {
     val listDetailNavigator = rememberListDetailPaneScaffoldNavigator(
         scaffoldDirective = calculatePaneScaffoldDirective(LocalWindowAdaptiveInfo.current),
@@ -87,9 +119,11 @@ internal fun HomePaneScreen(
         listPane = {
             AnimatedPane {
                 HomeListPane(
-                    paginatedNewsList, onCategoryClick,
-                    onNewsClick = ::onNewsClickShowDetailPane, selectedNews = selectedNews,
-                    highlightSelectedNews = listDetailNavigator.isDetailPaneVisible()
+                    categoryArray, paginatedNewsList,
+                    onNewsClick = ::onNewsClickShowDetailPane,
+                    selectedNews = selectedNews,
+                    highlightSelectedNews = listDetailNavigator.isDetailPaneVisible(),
+                    listState = listState, pagerState = pagerState
                 )
             }
         },
@@ -106,7 +140,6 @@ internal fun HomePaneScreen(
                         updateBookMark()
                     })
                 }
-
         },
     )
 }
@@ -114,28 +147,30 @@ internal fun HomePaneScreen(
 
 @Composable
 internal fun HomeListPane(
+    categoryArray: Array<String>,
     paginatedNewsList: LazyPagingItems<ModalNews>,
-    onCategoryClick: (String) -> Unit,
     onNewsClick: (ModalNews) -> Unit,
     modifier: Modifier = Modifier,
     selectedNews: ModalNews? = null,
     highlightSelectedNews: Boolean = false,
+    listState: LazyListState = rememberLazyListState(),
+    pagerState: PagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f,
+        pageCount = { categoryArray.size }
+    )
 ) {
-    val categoryArray = stringArrayResource(R.array.news_category)
-    val pagerState = rememberPagerState(pageCount = {
-        categoryArray.size
-    })
-
-    val lazyListState = rememberLazyListState()
-
-    LaunchedEffect(pagerState) {
-        snapshotFlow { pagerState.currentPage }.collect { index ->
-            onCategoryClick(categoryArray[index])
-        }
-    }
-
     Column(modifier = modifier.windowInsetsPadding(WindowInsets.statusBars)) {
-        NewsCategoryTab(categoryArray.toList(), pagerState)
+
+        val currentIndex = pagerState.currentPage
+        val scope = rememberCoroutineScope()
+
+        NewsCategoryTab(currentIndex, categoryArray) { index ->
+            scope.launch {
+                pagerState.animateScrollToPage(index)
+            }
+        }
+
         NewsHorizontalPagerList(pagerState, paginatedNewsList, {
             onNewsClick(it)
         }, {
@@ -143,8 +178,7 @@ internal fun HomeListPane(
         }, {
             paginatedNewsList.retry()
         }, selectedNews = selectedNews, highlightSelectedNews = highlightSelectedNews,
-            listState = lazyListState
+            listState = listState
         )
-
     }
 }
