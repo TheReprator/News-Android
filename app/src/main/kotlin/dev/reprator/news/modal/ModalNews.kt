@@ -1,25 +1,40 @@
 package dev.reprator.news.modal
 
-import androidx.compose.runtime.Immutable
+import android.os.Parcelable
+import androidx.room.Embedded
 import androidx.room.Entity
+import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
-@Immutable
-@Serializable
-@Entity(tableName = "news", primaryKeys= [ "title", "source", "author"])
+@Parcelize
+@Entity(tableName = "news", primaryKeys = ["title", "source", "author"])
 data class ModalNews(
-    val source: String,
-    val author: String,
-    val title: String,
+    @Embedded
+    val id: ModalNewsId,
     val description: String,
     val url: String,
     val urlToImage: String,
     val publishedAt: Long,
     val content: String,
-    val isBookMarked: Boolean,
+    @Embedded
+    val personalisation: ModalNewsPersonalisation,
     val category: String
-) {
-    val uniqueKey by lazy {
-        "$publishedAt, $source, $author, $title"
-    }
+) : Parcelable
+
+
+@Parcelize
+@Serializable
+data class ModalNewsId(
+    val source: String,
+    val author: String,
+    val title: String
+) : Parcelable
+
+
+@Parcelize
+@Serializable
+data class ModalNewsPersonalisation(
+    val isBookMarked: Boolean
+): Parcelable {
+    constructor(): this(false)
 }

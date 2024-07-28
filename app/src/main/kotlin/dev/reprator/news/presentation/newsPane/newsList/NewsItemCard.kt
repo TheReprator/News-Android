@@ -1,6 +1,5 @@
-package dev.reprator.news.presentation.newsList.ui
+package dev.reprator.news.presentation.newsPane.newsList
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,12 +23,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.reprator.news.modal.ModalNews
-import dev.reprator.news.presentation.ComposeLocalWrapper
 import dev.reprator.news.util.composeUtil.AppIcons.CLOCK
-import dev.reprator.news.util.composeUtil.theme.ContrastAwareNewsTheme
 import dev.reprator.news.util.composeUtil.theme.Dimens.ExtraSmallPadding
 import dev.reprator.news.util.composeUtil.theme.Dimens.ExtraSmallPadding2
 import dev.reprator.news.util.composeUtil.theme.Dimens.NewsCardSize
@@ -37,13 +33,20 @@ import dev.reprator.news.util.composeUtil.theme.Dimens.SmallIconSize
 import dev.reprator.news.util.composeUtil.ui.DynamicAsyncImage
 
 @Composable
-fun NewsCard(
+fun NewsItemCard(
     article: ModalNews,
     onClick: (ModalNews) -> Unit,
-    modifier: Modifier = Modifier,
+    isSelected: Boolean = false
 ) {
     Card(
-        modifier = modifier
+        colors = CardDefaults.cardColors(
+            containerColor = if (isSelected) {
+                MaterialTheme.colorScheme.inversePrimary
+            } else {
+                MaterialTheme.colorScheme.surfaceVariant
+            },
+        ),
+        modifier = Modifier
             .padding(5.dp)
             .fillMaxWidth()
             .clickable { onClick(article) },
@@ -55,8 +58,8 @@ fun NewsCard(
                 .clip(RoundedCornerShape(4.dp))
         ) {
             DynamicAsyncImage(
-                imageUrl = "https://i.natgeofe.com/n/1f58c33f-56ba-4982-b924-f642e75d8393/Tower11_3x4.jpg",
-                //imageUrl = article.urlToImage,
+                //imageUrl = "https://i.natgeofe.com/n/1f58c33f-56ba-4982-b924-f642e75d8393/Tower11_3x4.jpg",
+                imageUrl = article.urlToImage,
                 contentDescription = null,
                 Modifier
                     .clip(shape = RoundedCornerShape(10.dp)))
@@ -68,7 +71,7 @@ fun NewsCard(
                     .height(NewsCardSize)
             ) {
                 Text(
-                    text = article.title,
+                    text = article.id.title,
                     style = MaterialTheme.typography.bodyMedium.copy(),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
@@ -76,7 +79,7 @@ fun NewsCard(
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = article.source,
+                        text = article.id.source,
                         style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold)
                     )
                     Spacer(modifier = Modifier.width(ExtraSmallPadding2))
@@ -92,29 +95,6 @@ fun NewsCard(
                     )
                 }
             }
-        }
-    }
-}
-
-@Preview
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
-@Composable
-fun PreviewArticleCard() {
-    ComposeLocalWrapper {
-        ContrastAwareNewsTheme {
-            NewsCard(
-                article = ModalNews(
-                    category = "Tech",
-                    author = "Vikram Singh",
-                    content = "Vikram Content",
-                    description = "Vikram description",
-                    publishedAt = System.currentTimeMillis(),
-                    source = "BBC",
-                    title = "Her train broke down. Her phone died. And then she met her Saver in a",
-                    url = "",
-                    isBookMarked = false,
-                    urlToImage = "https://ichef.bbci.co.uk/live-experience/cps/624/cpsprodpb/11787/production/_124395517_bbcbreakingnewsgraphic.jpg"
-                ), {})
         }
     }
 }

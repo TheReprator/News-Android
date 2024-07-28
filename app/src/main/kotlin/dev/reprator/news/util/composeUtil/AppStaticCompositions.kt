@@ -1,11 +1,11 @@
 package dev.reprator.news.util.composeUtil
 
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-val LocalWindowSizeClass = staticCompositionLocalOf<WindowSizeClass> {
+val LocalWindowAdaptiveInfo = staticCompositionLocalOf<WindowAdaptiveInfo> {
   error("No WindowSizeClass available")
 }
 

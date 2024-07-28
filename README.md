@@ -9,3 +9,6 @@ Action item completed:
 1. News Fetch by category with database caching
 2. BookMark news
 3. Adaptable Aware
+
+Pending issue:
+1. Scroll not smooth due to nested scrolling

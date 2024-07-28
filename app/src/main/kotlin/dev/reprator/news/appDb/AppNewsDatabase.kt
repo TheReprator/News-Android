@@ -2,11 +2,11 @@ package dev.reprator.news.appDb
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import dev.reprator.news.dataSource.local.RemoteNewsKeys
-import dev.reprator.news.modal.ModalNews
+import dev.reprator.news.appDb.model.EntityDBNews
+import dev.reprator.news.appDb.model.EntityDBRemoteNewsKeys
 
 @Database(
-    entities = [ModalNews::class, RemoteNewsKeys::class],
+    entities = [EntityDBNews::class, EntityDBRemoteNewsKeys::class],
     version = 1,
 )
 abstract class AppNewsDatabase: RoomDatabase() {
