@@ -3,10 +3,7 @@ package dev.reprator.news.presentation.home.ui
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.PagerState
@@ -160,7 +157,7 @@ internal fun HomeListPane(
         pageCount = { categoryArray.size }
     )
 ) {
-    Column(modifier = modifier.windowInsetsPadding(WindowInsets.statusBars)) {
+    Column {
 
         val currentIndex = pagerState.currentPage
         val scope = rememberCoroutineScope()
