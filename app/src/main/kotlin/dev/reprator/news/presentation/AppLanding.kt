@@ -32,10 +32,10 @@ fun NewsApp() {
         NewsNavigationWrapper(
             snackBarHostState = snackBarHostState,
             selectedDestination = selectedDestination,
-            navigateToTopLevelDestination = navigationActions::navigateTo
-        ) {
-            NewsNavHost(navController = navController)
-        }
+            navigateToTopLevelDestination = navigationActions::navigateTo,
+        content= { modifier ->
+            NewsNavHost(navController = navController, modifier = modifier)
+        })
     }
 }
 
@@ -46,7 +46,7 @@ private fun NewsNavHost(
     modifier: Modifier = Modifier,
 ) {
     NavHost(
-        modifier = modifier,
+        modifier = Modifier.then(modifier),
         navController = navController,
         startDestination = ROUTE_HOME,
     ) {

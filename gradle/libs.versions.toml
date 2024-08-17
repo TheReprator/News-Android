@@ -1,14 +1,13 @@
 [versions]
-agp = "8.7.0-alpha03"
+agp = "8.5.2"
 
 sdk-min = "21"
-sdk-target = "34"
-sdk-compile = "34"
+sdk-target = "35"
+sdk-compile = "35"
 
 androidxMetrics = "1.0.0-beta01"
-accompanist = "0.34.0"
 
-kotlin = "2.0.0"
+kotlin = "2.0.10"
 kotlinx-Coroutines = "1.8.1"
 kotlinx-Datetime = "0.6.0"
 kotlinx-SerializationJson = "1.7.1"
@@ -16,23 +15,21 @@ kotlinx-SerializationJson = "1.7.1"
 androidx-CoreSplashscreen = "1.0.1"
 androidx-coreKtx = "1.13.1"
 androidx-DataStore = "1.1.1"
-androidx-Navigation = "2.8.0-beta06"
-androidx-Work = "2.9.0"
+androidx-Navigation = "2.8.0-beta07"
+androidx-Work = "2.9.1"
 androidx-Activity = "1.9.1"
-androidx-AppCompat = "1.7.0"
-androidx-Browser = "1.8.0"
-androidx-paging = "3.3.1"
+androidx-paging = "3.3.2"
 androidx-lifecycle = "2.8.4"
 androidx-Tracing = "1.3.0-alpha02"
 
 composeBom = "2024.06.00"
-compose-androidx-Alpha="1.7.0-beta06"
+compose-androidx-Alpha="1.7.0-beta07"
 compose-androidx-HiltNavigation = "1.2.0"
 compose-androidx-Material3-Adaptive = "1.0.0-beta04"
 compose-androidx-RuntimeTracing = "1.0.0-beta01"
 material3AdaptiveNavigationSuiteAndroid = "1.3.0-beta05"
 
-ksp = "2.0.0-1.0.23"
+ksp = "2.0.10-1.0.24"
 
 hilt = "2.51.1"
 hilt-Ext = "1.2.0"
@@ -54,13 +51,9 @@ timber = "5.0.1"
 
 
 [libraries]
-accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
-
 androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "androidx-lifecycle" }
 
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-Activity" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-AppCompat" }
-androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "androidx-Browser" }
 androidx-tracing-ktx = { group = "androidx.tracing", name = "tracing-ktx", version.ref = "androidx-Tracing" }
 
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
